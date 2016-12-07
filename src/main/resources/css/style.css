@@ -1,0 +1,182 @@
+.navigate:hover .login:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+}
+
+.button_move {
+    -fx-background-color: transparent;
+}
+
+.logout {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 15 15 15 15;
+    -fx-padding: 0;
+}
+
+.background {
+  -fx-background-color:  #094AB2
+}
+
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+.user {
+    -fx-background-image: url("../images/user.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: cover;
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
+}
+
+.navigate {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-text-fill: white;
+  -fx-padding: 0;
+}
+
+.menu-item:focused {
+    -fx-background-color: yellow;
+}
+
+.menu-item {
+    -fx-padding: 0;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: black;
+   /* -fx-background-insets: 0, 1, 2; */
+    -fx-background-radius: 10 10 10 10, 0 5 5 5, 0 4 4 4;
+}
+
+.user-info:hover {
+    -fx-padding: 0;
+}
+
+.user-info {
+    -fx-background-color: black;
+    -fx-padding: 0;
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+}
+
+
+.list-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.list-cell {
+    -fx-cell-size: 40px;
+    -fx-font-size: 17px;
+}
+
+
+.list-cell:filled:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: white;
+}
+
+/****************************************************************
+  ScrollBar Skin
+****************************************************************/
+.scroll-bar{
+    -fx-background-color: rgb(96,96,96);
+    -fx-background-radius: 2em;
+}
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color:transparent;
+    -fx-background-radius: 2em;
+}
+.scroll-bar:vertical .track-background,
+.scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 2em;
+}
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: rgb(211,211,211);
+    -fx-background-insets: 4 0 4 0;
+    -fx-background-radius: 2em;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: rgb(211,211,211);
+    -fx-background-insets: 0 4 0 4;
+    -fx-background-radius: 2em;
+}
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgb(231,231,231);
+}
+.scroll-bar:horizontal .thumb:pressed,
+.scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: rgb(255,255,255);
+}
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+    -fx-padding: 5;
+}
+.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+    -fx-padding: 5;
+}
+.scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-background-color: rgb(211,211,211);
+    -fx-padding: 0.25em;
+    -fx-rotate: -90;
+}
+.scroll-bar:vertical .increment-arrow {
+    -fx-background-color: rgb(211,211,211);
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.25em;
+    -fx-rotate: 0;
+}
+.scroll-bar:horizontal .decrement-arrow {
+    -fx-background-color: rgb(211,211,211);
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.25em;
+    -fx-rotate: 90;
+}
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: rgb(211,211,211);
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.25em;
+    -fx-rotate: -180;
+}
+.scroll-bar:vertical:focused,
+.scroll-bar:horizontal:focused {
+    -fx-background-color: transparent,rgb(96,96,96),rgb(96,96,96);
+}

@@ -109,7 +109,7 @@ public class TcpComm implements Comm, Runnable {
                             tt.cancel();
                         }
                         */
-                        packetCounter--;
+                        packetCounter = 0;
                         m_observer.processData(data);
                     }
                 }else {

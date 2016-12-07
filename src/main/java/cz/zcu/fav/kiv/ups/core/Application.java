@@ -1,15 +1,20 @@
-package cz.zcu.fa.kiv.ups.core;
+package cz.zcu.fav.kiv.ups.core;
 
+import cz.zcu.fav.kiv.ups.network.RCVMessage;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
+import cz.zcu.fav.kiv.ups.view.ExplorerController;
 import cz.zcu.fav.kiv.ups.view.FXMLTemplates;
 import cz.zcu.fav.kiv.ups.view.LoginController;
+import cz.zcu.fav.kiv.ups.view.WindowManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.*;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by vrenclouff on 06.12.16.
@@ -20,6 +25,8 @@ public class Application {
 
     private static final Application INSTANCE = new Application();
 
+    private String username;
+
     private Application(){}
 
     public static Application getInstance() {
@@ -27,28 +34,47 @@ public class Application {
     }
 
     public void start(Parameters params, Stage primaryStage) {
+
+        WindowManager.init(primaryStage);
         initLogger(params.getVerbose(), params.isLog_console(), params.isLog_file());
+        username = params.getUsername();
 
         logger.info("Application start.");
 
+        ConcurrentLinkedQueue<RCVMessage> rcvQueue = new ConcurrentLinkedQueue<RCVMessage>();
+
+        ConcurrentLinkedQueue<SNDMessage> sndQueue = new ConcurrentLinkedQueue<SNDMessage>();
+
+        showLoginScreen(params.getUsername());
+
+    }
+
+    public void showLoginScreen(String username) {
         try {
             FXMLLoader loader = new FXMLLoader(FXMLTemplates.LOGIN);
             Parent parent = loader.load();
 
             Scene loginScene = new Scene(parent);
             LoginController loginController = loader.getController();
+            loginController.setUsername(username);
 
-            primaryStage.setScene(loginScene);
-            primaryStage.show();
+            WindowManager.getInstance().setView(loginController, loginScene);
 
-            if (params.isAutoLogin()) {
+            if (StringUtils.isNotEmpty(username)) {
                 loginController.login();
             }
 
         }catch (Exception e) {
             logger.error(e);
         }
+    }
 
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     private void initLogger(int loglevel, boolean console, boolean file) {

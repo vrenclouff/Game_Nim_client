@@ -1,5 +1,12 @@
 package cz.zcu.fa.kiv.ups.core;
 
+import cz.zcu.fav.kiv.ups.view.FXMLTemplates;
+import cz.zcu.fav.kiv.ups.view.LoginController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.log4j.*;
 
 import java.io.IOException;
@@ -9,7 +16,7 @@ import java.io.IOException;
  */
 public class Application {
 
-    private static final Logger logger = LogManager.getLogger(Application.class);
+    private final Logger logger = LogManager.getLogger(Application.class);
 
     private static final Application INSTANCE = new Application();
 
@@ -19,25 +26,29 @@ public class Application {
         return INSTANCE;
     }
 
-    public void start(Parameters params) {
-        initLogger(0, true, false);
+    public void start(Parameters params, Stage primaryStage) {
+        initLogger(params.getVerbose(), params.isLog_console(), params.isLog_file());
 
         logger.info("Application start.");
-    }
 
-    private Level getLogLevel(int level) {
-        switch (level) {
-            case 0:
-                return Level.DEBUG;
-            case 1:
-                return Level.INFO;
-            case 2:
-                return Level.WARN;
-            case 3:
-                return Level.ERROR;
-            default:
-                return Level.INFO;
+        try {
+            FXMLLoader loader = new FXMLLoader(FXMLTemplates.LOGIN);
+            Parent parent = loader.load();
+
+            Scene loginScene = new Scene(parent);
+            LoginController loginController = loader.getController();
+
+            primaryStage.setScene(loginScene);
+            primaryStage.show();
+
+            if (params.isAutoLogin()) {
+                loginController.login();
+            }
+
+        }catch (Exception e) {
+            logger.error(e);
         }
+
     }
 
     private void initLogger(int loglevel, boolean console, boolean file) {
@@ -62,6 +73,21 @@ public class Application {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private Level getLogLevel(int level) {
+        switch (level) {
+            case 0:
+                return Level.DEBUG;
+            case 1:
+                return Level.INFO;
+            case 2:
+                return Level.WARN;
+            case 3:
+                return Level.ERROR;
+            default:
+                return Level.INFO;
         }
     }
 }

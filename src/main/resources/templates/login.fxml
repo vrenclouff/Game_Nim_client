@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.RootController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.LoginController">
    <children>
-      <Pane prefHeight="390.0" prefWidth="484.0" style="-fx-background-color: #094AB2;">
+      <Pane fx:id="content" prefHeight="390.0" prefWidth="484.0" style="-fx-background-color: #094AB2;">
          <children>
             <Button layoutX="439.0" layoutY="-4.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: transparent;" text="-" textFill="WHITE">
                <font>
@@ -50,6 +50,6 @@
             </Button>
          </children>
       </Pane>
-      <ProgressIndicator layoutX="224.0" layoutY="188.0" prefHeight="58.0" prefWidth="62.0" visible="false" />
+      <ProgressIndicator fx:id="loadingWheel" layoutX="224.0" layoutY="188.0" prefHeight="58.0" prefWidth="62.0" visible="false" />
    </children>
 </Pane>

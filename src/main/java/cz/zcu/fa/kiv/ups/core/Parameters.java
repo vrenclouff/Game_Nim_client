@@ -3,6 +3,7 @@ package cz.zcu.fa.kiv.ups.core;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by vrenclouff on 06.12.16.
@@ -71,4 +72,6 @@ public class Parameters {
     public boolean isLog_file() {
         return log_file;
     }
+
+    public boolean isAutoLogin() { return StringUtils.isNotEmpty(address) && StringUtils.isNotEmpty(port) && StringUtils.isNotEmpty(loginname); }
 }

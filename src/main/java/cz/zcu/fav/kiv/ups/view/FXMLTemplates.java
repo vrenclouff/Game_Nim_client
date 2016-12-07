@@ -8,7 +8,7 @@ public class FXMLTemplates {
     private static final String FOLDER = "/templates/";
 
     /** Index sablona */
-    public static final URL INDEX = FXMLTemplates.class.getResource(FOLDER+"root.fxml");
+    public static final URL LOGIN = FXMLTemplates.class.getResource(FOLDER+"login.fxml");
 
     /** DEMO sablona */
     public static final URL DEMO = FXMLTemplates.class.getResource(FOLDER+"demo.fxml");

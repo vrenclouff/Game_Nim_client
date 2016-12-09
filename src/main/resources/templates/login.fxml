@@ -11,7 +11,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="484.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.LoginController">
    <children>
-      <ProgressIndicator fx:id="loadingWheel" layoutX="215.0" layoutY="188.0" prefHeight="58.0" prefWidth="71.0" visible="false" />
       <Pane fx:id="content" prefHeight="328.0" prefWidth="484.0" styleClass="background">
          <children>
             <Button fx:id="moveBtn" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="16.0" prefWidth="484.0" styleClass="button_move" />
@@ -23,7 +22,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </Button>
-            <Label alignment="CENTER_RIGHT" layoutX="84.0" layoutY="178.0" prefHeight="27.0" prefWidth="84.0" text="Username" textFill="WHITE">
+            <Label alignment="CENTER_RIGHT" layoutX="84.0" layoutY="160.0" prefHeight="27.0" prefWidth="84.0" text="Username" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -33,7 +32,7 @@
                   <Font size="39.0" />
                </font>
             </Label>
-            <Button layoutX="326.0" layoutY="229.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="71.0" text="Login">
+            <Button layoutX="326.0" layoutY="211.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="71.0" text="Login">
                <styleClass>
                   <String fx:value="button" />
                   <String fx:value="login" />
@@ -43,15 +42,17 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <TextField fx:id="username" layoutX="181.0" layoutY="179.0" prefHeight="25.0" prefWidth="214.0" />
+            <TextField fx:id="username" layoutX="181.0" layoutY="161.0" prefHeight="25.0" prefWidth="214.0" />
             <Button layoutX="464.0" layoutY="-2.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="20.0" styleClass="navigate" text="X" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
             <Label layoutX="24.0" layoutY="303.0" opacity="0.5" prefHeight="17.0" prefWidth="441.0" text="Copyright © 2016, Lukáš Černý" textFill="#ebebeb" />
-            <Label fx:id="validationMessage" layoutX="181.0" layoutY="208.0" prefHeight="17.0" prefWidth="214.0" text="Username is required." textFill="RED" />
+            <Label fx:id="validationMessage" layoutX="181.0" layoutY="190.0" prefHeight="17.0" prefWidth="214.0" text="Username is required." textFill="RED" />
          </children>
       </Pane>
+      <ProgressIndicator fx:id="loadingWheel" layoutX="207.0" layoutY="140.0" prefHeight="58.0" prefWidth="71.0" visible="false" />
+      <Button fx:id="loadingStopWheel" layoutX="237.0" layoutY="164.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="13.0" prefWidth="13.0" styleClass="loading_stop_wheel" visible="false" />
    </children>
 </Pane>

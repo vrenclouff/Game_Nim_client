@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -40,6 +41,7 @@ public class WindowManager {
      */
     public void setView(BaseController controller, Scene scene) {
         EffectUtilities.makeDraggable(stage, controller.moveBtn);
+        setSize(scene.getWidth(), scene.getHeight());
         this.controller = controller;
         this.stage.setScene(scene);
         this.stage.show();
@@ -68,7 +70,10 @@ public class WindowManager {
         this.stage.setIconified(true);
     }
 
-    class Delta { double x, y; }
+    public void setSize(double width, double height) {
+        this.stage.setHeight(width);
+        this.stage.setHeight(height);
+    }
 }
 
 class EffectUtilities {

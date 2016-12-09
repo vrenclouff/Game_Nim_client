@@ -13,6 +13,8 @@ public class FXMLTemplates {
     /** Sablona uzivatelu */
     public static final URL EXPLORER = FXMLTemplates.class.getResource(FOLDER+"explorer.fxml");
 
+    public static final URL GAME = FXMLTemplates.class.getResource(FOLDER+"game.fxml");
+
     /** DEMO sablona */
     public static final URL DEMO = FXMLTemplates.class.getResource(FOLDER+"demo.fxml");
 

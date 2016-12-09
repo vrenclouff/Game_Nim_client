@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="439.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.GameController">
+   <children>
+      <Pane fx:id="content" prefHeight="555.0" prefWidth="439.0">
+         <children>
+            <Button fx:id="moveBtn" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="16.0" prefWidth="439.0" styleClass="button_move" />
+            <Button alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="400.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="20.0" prefWidth="20.0" styleClass="navigate" text="-" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Button>
+            <Button layoutX="420.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="20.0" styleClass="navigate" text="X" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <MenuButton layoutX="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="user">
+               <items>
+                  <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
+                     <content>
+                        <Pane prefHeight="119.0" prefWidth="154.0" styleClass="user-info">
+                           <children>
+                              <Button layoutX="27.0" layoutY="78.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#logout" prefHeight="23.0" prefWidth="105.0" styleClass="logout" text="Logout" />
+                              <Label fx:id="username" alignment="CENTER" layoutX="8.0" layoutY="14.0" prefHeight="23.0" prefWidth="138.0" text="Username" textFill="WHITE" />
+                              <Button layoutX="27.0" layoutY="44.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#endGame" prefHeight="23.0" prefWidth="105.0" styleClass="logout" text="End game" />
+                           </children>
+                        </Pane>
+                     </content>
+                  </CustomMenuItem>
+               </items>
+            </MenuButton>
+            <HBox id="0" alignment="TOP_CENTER" layoutX="20.0" layoutY="75.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children></HBox>
+            <HBox id="1" alignment="TOP_CENTER" layoutX="20.0" layoutY="155.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox id="2" alignment="TOP_CENTER" layoutX="20.0" layoutY="235.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox id="3" alignment="TOP_CENTER" layoutX="20.0" layoutY="315.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox id="4" alignment="TOP_CENTER" layoutX="20.0" layoutY="395.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox id="5" alignment="TOP_CENTER" layoutX="20.0" layoutY="475.0" prefHeight="65.0" prefWidth="400.0" spacing="20.0" styleClass="game_layer">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/match.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Button layoutX="186.0" layoutY="31.0" mnemonicParsing="false" onAction="#endTurn" styleClass="login" text="End turn" />
+            <Label fx:id="counter" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="31.0" prefHeight="27.0" prefWidth="33.0" text="3" textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ProgressIndicator fx:id="loadingWheel" layoutX="152.0" layoutY="158.0" prefHeight="58.0" prefWidth="71.0" visible="false" />
+      <Button fx:id="loadingStopWheel" layoutX="182.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="13.0" prefWidth="13.0" styleClass="loading_stop_wheel" textFill="WHITE" visible="false" />
+   </children>
+</Pane>

@@ -1,5 +1,18 @@
-.navigate:hover .login:hover {
+.navigate:hover {
     -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.game_layer:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.game_layer {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
 }
 
 .login {
@@ -7,6 +20,17 @@
     -fx-text-fill: white;
     -fx-border-color: white;
 }
+
+.loading_stop_wheel {
+    -fx-background-color: transparent;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+}
+
+.loading_stop_wheel:hover {
+    -fx-background-color: rgba(0, 180, 255, 0.5);
+}
+
 
 .button_move {
     -fx-background-color: transparent;
@@ -30,6 +54,14 @@
 
 .menu-button > .arrow-button > .arrow {
     -fx-padding: 0;
+}
+
+.match {
+    -fx-background-image: url("../images/match.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
 }
 
 .user {
@@ -59,7 +91,6 @@
 .context-menu {
     -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
     -fx-background-color: black;
-   /* -fx-background-insets: 0, 1, 2; */
     -fx-background-radius: 10 10 10 10, 0 5 5 5, 0 4 4 4;
 }
 

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -49,5 +50,7 @@
             </MenuButton>
          </children>
       </Pane>
+      <ProgressIndicator fx:id="loadingWheel" layoutX="152.0" layoutY="158.0" prefHeight="58.0" prefWidth="71.0" />
+      <Button fx:id="loadingStopWheel" layoutX="182.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="13.0" prefWidth="13.0" styleClass="loading_stop_wheel" textFill="WHITE" />
    </children>
 </Pane>

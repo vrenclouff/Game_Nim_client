@@ -4,7 +4,6 @@ package cz.zcu.fav.kiv.ups.core;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by vrenclouff on 06.12.16.
@@ -23,7 +22,7 @@ public class Parameters {
     private String address;
 
     @Parameter(names={"--port", "-p"}, required = true, description = "Define port to server")
-    private String port;
+    private Integer port;
 
     @Parameter(names = {"--user", "-u"}, description = "Username for login to server")
     private String username;
@@ -63,7 +62,7 @@ public class Parameters {
         return address;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 

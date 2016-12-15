@@ -1,15 +1,23 @@
 package cz.zcu.fav.kiv.ups.view;
 
+import cz.zcu.fav.kiv.ups.core.Application;
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.Network;
+import cz.zcu.fav.kiv.ups.network.NetworkState;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Pane;
+
+import java.util.Optional;
 
 
 /**
  * Created by vrenclouff on 07.12.16.
  */
-public abstract class BaseController {
+abstract class BaseController {
 
 
     @FXML
@@ -22,7 +30,9 @@ public abstract class BaseController {
     protected ProgressIndicator loadingWheel;
 
     @FXML
-     protected Button loadingStopWheel;
+    protected Button loadingStopWheel;
+
+    protected Network network;
 
     @FXML
     private void close() {
@@ -35,16 +45,26 @@ public abstract class BaseController {
     }
 
     @FXML
-    private void logout() { WindowManager.getInstance().logout();}
+    private void logout() {
+        PrettyAlert alert = new PrettyAlert("Logout", "Do you want logout from application?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+        alert.addButtons(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes) {
+            Application.getInstance().setUsername("");
+            network.send(new SNDMessage(NetworkState.LOGOUT, ""));
+        }
+    }
 
-    protected void startLoadingWheel() {
+    void startLoadingWheel() {
         this.loadingWheel.setVisible(true);
         this.loadingStopWheel.setVisible(true);
         this.loadingStopWheel.setOnAction(e -> didStopLoadingWheel());
         this.content.setOpacity(0.5);
     }
 
-    protected void stopLoadingWheel() {
+    void stopLoadingWheel() {
         this.loadingWheel.setVisible(false);
         this.loadingStopWheel.setVisible(false);
         this.content.setOpacity(1.0);
@@ -62,14 +82,18 @@ public abstract class BaseController {
         }
     }
 
-    protected void actualizeScene(ViewDTO data) {
-        assert (data != null && this.getClass() == data.getaClass());
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
+    private void actualizeScene(ViewDTO data) {
+        if (data != null && this.getClass() != data.getaClass()) { return; }
         this.processData(data.getObjects());
     }
 
     protected abstract void nextScene(ViewDTO data);
 
-    protected abstract void showAlert(ViewDTO data);
+    protected abstract void showAlert(InternalMsg state, String... content);
 
     protected abstract void processData(Object[] data);
 }

@@ -1,6 +1,8 @@
 package cz.zcu.fav.kiv.ups.view;
 
 
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
+
 /**
  * Created by vrenclouff on 07.12.16.
  */
@@ -8,9 +10,9 @@ public class ViewDTO {
 
     private Class aClass;
 
-    private Object[] objects;
+    private String[] objects;
 
-    public ViewDTO(Class aClass, Object[] objects) {
+    public ViewDTO(Class aClass , String[] objects) {
         this.aClass = aClass;
         this.objects = objects;
     }
@@ -19,7 +21,8 @@ public class ViewDTO {
         return aClass;
     }
 
-    public Object[] getObjects() {
+    public String[] getObjects() {
         return objects;
     }
+
 }

@@ -1,6 +1,5 @@
 package cz.zcu.fav.kiv.ups.network;
 
-import java.util.List;
 
 /**
  * Created by vrenclouff on 07.12.16.
@@ -9,12 +8,9 @@ public class RCVMessage {
 
     private NetworkState state;
 
-    private int socket;
+    private Object[] parameters;
 
-    private List<String> parameters;
-
-    public RCVMessage(final int socket, final NetworkState state, final List<String> parameters) {
-        this.socket = socket;
+    public RCVMessage(final NetworkState state, Object... parameters) {
         this.state = state;
         this.parameters = parameters;
     }
@@ -23,11 +19,7 @@ public class RCVMessage {
         return state;
     }
 
-    public int getSocket() {
-        return socket;
-    }
-
-    public List<String> getParameters() {
+    public Object[] getParameters() {
         return parameters;
     }
 }

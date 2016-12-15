@@ -1,4 +1,4 @@
-package cz.zcu.fav.kiv.ups.network;
+package delete;
 
 
 import java.io.*;

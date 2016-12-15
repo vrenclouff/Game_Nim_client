@@ -1,13 +1,15 @@
 package cz.zcu.fav.kiv.ups.view;
 
 import cz.zcu.fav.kiv.ups.core.Application;
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.NetworkState;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
@@ -54,14 +56,16 @@ public class LoginController extends BaseController {
         List<Character> second = Arrays.asList(UNSUPPORTED_CHARACTERS);
         boolean isCommon = Collections.disjoint(second, first);
         if (!isCommon) {
-            validationMessage.setText("Username contains unsupported characters."); return;
+            validationMessage.setText("Unsupported characters."); return;
         }
 
         validationMessage.setText(StringUtils.EMPTY);
-        startLoadingWheel();
         Application.getInstance().setUsername(text);
 
 
+        network.send(new SNDMessage(NetworkState.LOGIN, text));
+        startLoadingWheel();
+/*
         String[] names = new String[]{
                 "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
                 "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
@@ -74,6 +78,7 @@ public class LoginController extends BaseController {
                             WindowManager.getInstance()
                                     .processView(new ViewDTO(ExplorerController.class, names)));
                 }}, 500);
+*/
     }
 
     @FXML
@@ -91,7 +96,7 @@ public class LoginController extends BaseController {
 
     @Override
     protected void nextScene(ViewDTO data) {
-        assert (data != null && ExplorerController.class == data.getaClass());
+        if (data != null && ExplorerController.class != data.getaClass()) {return;}
         stopLoadingWheel();
 
         try {
@@ -106,9 +111,19 @@ public class LoginController extends BaseController {
     }
 
     @Override
-    protected void showAlert(ViewDTO data) {
-        assert (data != null && this.getClass() == data.getaClass());
+    protected void showAlert(InternalMsg state, String... content) {
+        assert (state != null);
+        stopLoadingWheel();
 
+        switch (state) {
+            default:
+            {
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeYes = new ButtonType("Ok");
+                alert.addButtons(buttonTypeYes);
+                alert.showAndWait();
+            }break;
+        }
     }
 
     @Override

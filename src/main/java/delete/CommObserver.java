@@ -1,4 +1,4 @@
-package cz.zcu.fav.kiv.ups.network;
+package delete;
 
 /**
  * Created by vrenclouff on 23/10/16.

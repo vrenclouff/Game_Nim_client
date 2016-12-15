@@ -14,6 +14,11 @@ public enum NetworkState {
     GAME_SWITCH_USER,
     GAME_TURN,
     GAME,
-    IN_APP,
+    INVALID,
+    PONG,
+    GAME_CHALLENGER,
+    GAME_INVITE,
+    GAME_SETTINGS,
+    IN_APP_ALERT,
     ;
 }

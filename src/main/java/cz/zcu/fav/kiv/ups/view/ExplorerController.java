@@ -1,21 +1,23 @@
 package cz.zcu.fav.kiv.ups.view;
 
 import cz.zcu.fav.kiv.ups.core.Application;
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.NetworkState;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import cz.zcu.fav.kiv.ups.view.components.CellButton;
 import cz.zcu.fav.kiv.ups.view.components.UserCell;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 public class ExplorerController extends BaseController {
 
@@ -38,14 +40,8 @@ public class ExplorerController extends BaseController {
 
     public void listViewDidPlayRow() {
         startLoadingWheel();
-        logger.info("Send request to " + selectedCell.text);
-
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {public void run() {
-                    Platform.runLater(() ->
-                            WindowManager.getInstance().processView(
-                                    new ViewDTO(GameController.class, null)));
-                }}, 500);
+        logger.info("Selected player with name: " + selectedCell.text);
+        network.send(new SNDMessage(NetworkState.GAME_CHALLENGER, selectedCell.text));
     }
 
     private void listViewDidSelectRow(CellButton cell) {
@@ -53,31 +49,11 @@ public class ExplorerController extends BaseController {
         if (selectedCell != null) selectedCell.visibleButton = false;
         selectedCell = cell;
         listOfUser.refresh();
-
-
-
-
-
-       /* Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setHeaderText("You should play with "+username);
-
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeYes){
-            logger.info("I will play with "+username);
-        } else if (result.get() == buttonTypeNo) {
-            logger.info("I will not play with "+username);
-        }
-        */
     }
 
     @Override
     protected void nextScene(ViewDTO data) {
-        assert (data != null && ExplorerController.class == data.getaClass());
+        if (data != null && GameController.class != data.getaClass()) {return;}
         stopLoadingWheel();
 
         try {
@@ -92,16 +68,33 @@ public class ExplorerController extends BaseController {
     }
 
     @Override
-    protected void showAlert(ViewDTO data) {
-        assert (data != null && this.getClass() == data.getaClass());
+    protected void showAlert(InternalMsg state, String... content) {
+        assert (state != null);
 
+        switch (state) {
+            case INVITE:
+            {
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+                alert.addButtons(buttonTypeYes, buttonTypeNo);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeYes) {
+                    network.send(new SNDMessage(NetworkState.GAME_INVITE, ("ACCEPT" + " " + content[1])));
+                }else if (result.get() == buttonTypeNo) {
+                    network.send(new SNDMessage(NetworkState.GAME_INVITE, ("IGNORE" + " " + content[1])));
+                }
+            }break;
+        }
     }
 
     @Override
     protected void processData(Object[] data) {
         stopLoadingWheel();
         ObservableList<CellButton> list = FXCollections.observableArrayList();
-        Arrays.stream(data).forEach(e -> list.add(new CellButton((String)e)));
+        Arrays.asList(data).stream().forEach((e -> list.add(new CellButton((String)e))));
+        listOfUser.getItems().clear();
+        listOfUser.getSelectionModel().clearSelection();
         listOfUser.setItems(list);
     }
 

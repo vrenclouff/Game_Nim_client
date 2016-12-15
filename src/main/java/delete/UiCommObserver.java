@@ -1,6 +1,7 @@
-package cz.zcu.fav.kiv.ups.network;
+package delete;
 
 
+import delete.CommObserver;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 

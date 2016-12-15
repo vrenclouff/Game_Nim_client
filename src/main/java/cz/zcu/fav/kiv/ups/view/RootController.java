@@ -1,7 +1,7 @@
 package cz.zcu.fav.kiv.ups.view;
 
-import cz.zcu.fav.kiv.ups.network.Comm;
-import cz.zcu.fav.kiv.ups.network.UiCommObserver;
+import delete.Comm;
+import delete.UiCommObserver;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

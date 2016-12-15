@@ -5,20 +5,13 @@ package cz.zcu.fav.kiv.ups.network;
  */
 public class SNDMessage {
 
-    private int socket;
-
     private NetworkState state;
 
     private String parameters;
 
-    public SNDMessage(final int socket, final NetworkState state, final String parameters) {
-        this.socket = socket;
+    public SNDMessage(final NetworkState state, final String parameters) {
         this.state = state;
         this.parameters = parameters;
-    }
-
-    public int getSocket() {
-        return socket;
     }
 
     public NetworkState getState() {

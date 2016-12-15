@@ -1,15 +1,27 @@
 package cz.zcu.fav.kiv.ups.view;
 
 import cz.zcu.fav.kiv.ups.core.Application;
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.Network;
+import cz.zcu.fav.kiv.ups.network.NetworkState;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.commons.lang.StringUtils;
+
+import javax.swing.text.View;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by vrenclouff on 07.12.16.
@@ -20,14 +32,15 @@ public class WindowManager {
 
     private Stage stage;
 
+    private Network network;
+
     public BaseController controller;
 
-    public static void init(Stage stage) {
+    public static void init(Stage stage, Network network) {
         INSTANCE.stage = stage;
+        INSTANCE.network = network;
 
         INSTANCE.stage.initStyle(StageStyle.UNDECORATED);
-
-
     }
 
     public static WindowManager getInstance() {
@@ -40,27 +53,60 @@ public class WindowManager {
      * @param scene - obsah obrazovky
      */
     public void setView(BaseController controller, Scene scene) {
+        setSize(controller.content.getPrefWidth(), controller.content.getPrefHeight());
         EffectUtilities.makeDraggable(stage, controller.moveBtn);
-        setSize(scene.getWidth(), scene.getHeight());
+        controller.setNetwork(network);
+
         this.controller = controller;
         this.stage.setScene(scene);
         this.stage.show();
     }
 
     public void processView(ViewDTO data) {
-        this.controller.setScene(data);
+        Platform.runLater(() -> controller.setScene(data));
     }
 
-    public void showAlert(ViewDTO data) {
-        this.controller.showAlert(data);
+    public void showAlert(InternalMsg state, String... content) {
+        new Timer().schedule(new TimerTask() {public void run() {Platform.runLater(() -> {
+            controller.didStopLoadingWheel();
+                switch (state) {
+                    case INFO: {
+                        PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                        ButtonType buttonTypeYes = new ButtonType("Ok");
+                        alert.addButtons(buttonTypeYes);
+                        alert.showAndWait();
+                    }
+                    break;
+                    case SERVER_AVAILABLE: {
+                        PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                        ButtonType buttonTypeYes = new ButtonType("Ok");
+                        alert.addButtons(buttonTypeYes);
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == buttonTypeYes) {
+                            Application.getInstance().setUsername("");
+                            Platform.runLater(() -> showLoginScreen());
+                        }
+                    }
+                    break;
+                    default: {
+                        controller.showAlert(state, content);
+                    }
+                    break;
+                }
+        });}}, 500);
     }
 
     public void logout() {
-        Application.getInstance().showLoginScreen("");
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                Platform.runLater(() -> showLoginScreen());
+            }
+        }, 500);
     }
 
+    public void login() { Platform.runLater(() -> showLoginScreen()); }
+
     public void closeWindow() {
-        // TODO logout
         this.stage.setOnCloseRequest(e -> Platform.exit());
         Platform.exit();
         System.exit(0);
@@ -71,8 +117,23 @@ public class WindowManager {
     }
 
     public void setSize(double width, double height) {
-        this.stage.setHeight(width);
+        this.stage.setWidth(width);
         this.stage.setHeight(height);
+    }
+
+    private void showLoginScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(FXMLTemplates.LOGIN);
+            Parent parent = loader.load();
+            Scene loginScene = new Scene(parent);
+            LoginController loginController = loader.getController();
+            loginController.setNetwork(network);
+            setView(loginController, loginScene);
+            String username = Application.getInstance().getUsername();
+            if (StringUtils.isNotEmpty(username)) {loginController.login();}
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

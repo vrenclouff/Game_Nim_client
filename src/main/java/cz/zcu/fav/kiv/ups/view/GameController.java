@@ -1,21 +1,30 @@
 package cz.zcu.fav.kiv.ups.view;
 
+import cz.zcu.fav.kiv.ups.core.Application;
+import cz.zcu.fav.kiv.ups.core.GameSettings;
+import cz.zcu.fav.kiv.ups.core.InternalMsg;
 import cz.zcu.fav.kiv.ups.view.components.NodeUtils;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 public class GameController extends BaseController {
 
     private final Logger logger = LogManager.getLogger(GameController.class);
+
+    private GameSettings settings;
 
     private final static int MIN_HEIGHT = 75;
 
@@ -31,16 +40,21 @@ public class GameController extends BaseController {
 
     private List<Node> elements;
 
+     public GameController() {
+        this.settings = Application.getInstance().getSettings();
+     }
+
     @FXML
     private void initialize() {
+        username.setText(Application.getInstance().getUsername());
         elements = NodeUtils.paneNodesByClass(content, new Class[]{HBox.class});
         elements.forEach(e -> {e.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectedLayer(e));});
-        WindowManager.getInstance().setSize(content.getWidth(), getHeighForLayers());
+        content.setPrefHeight(MIN_HEIGHT+(settings.getLayers()*(LAYER_HEIGHT+LAYER_SPACE)));
+        resetCounter();
     }
 
-    private int getHeighForLayers() {
-        int layers = 6;
-        return MIN_HEIGHT+(layers*(LAYER_HEIGHT+LAYER_SPACE));
+    private void resetCounter() {
+        counter.setText(String.valueOf(settings.getTaking()));
     }
 
     public void setUsername(String username) {
@@ -54,19 +68,41 @@ public class GameController extends BaseController {
     @FXML
     private void endGame() {
         logger.info("Ukoncuji hru....");
+        PrettyAlert alert = new PrettyAlert("End game", "Do you want exit game?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+        alert.addButtons(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes){
+            /*
+            String[] names = new String[]{
+                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
+                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
+                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
+            };
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {public void run() {
+                        Platform.runLater(() ->
+                                WindowManager.getInstance()
+                                        .processView(new ViewDTO(ExplorerController.class, names)));
+                    }}, 500);
+                   */
+        }
     }
 
     @FXML
     private void endTurn() {
         logger.info("Ukoncuji tah....");
         waitForTurnStart();
-
+/*
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {public void run() {
                     Platform.runLater(() ->
                             WindowManager.getInstance().processView(
                                     new ViewDTO(GameController.class, null)));
                 }}, 2000);
+          */
     }
 
     private void waitForTurnStart() {
@@ -100,20 +136,40 @@ public class GameController extends BaseController {
 
     @Override
     protected void nextScene(ViewDTO data) {
-        assert (data != null && ExplorerController.class == data.getaClass());
+        if (data != null && ExplorerController.class != data.getaClass()) { return; }
         stopLoadingWheel();
 
+        try {
+            FXMLLoader loader = new FXMLLoader(FXMLTemplates.EXPLORER);
+            Scene scene = new Scene(loader.load());
+            ExplorerController controller = loader.getController();
+            controller.processData(data.getObjects());
+            WindowManager.getInstance().setView(controller, scene);
+        } catch (IOException e) {
+            logger.error("GameController::nextScene()", e);
+        }
     }
 
     @Override
-    protected void showAlert(ViewDTO data) {
-        assert (data != null && this.getClass() == data.getaClass());
+    protected void showAlert(InternalMsg state, String... content) {
+        assert (state != null);
 
     }
 
     @Override
     protected void processData(Object[] data) {
-        waitForTurnStop();
+
+        String state = ((String)data[0]).trim();
+        if (state.equals("START")) {
+            waitForTurnStop();
+        }else if (state.equals("STOP")) {
+            waitForTurnStart();
+        }
+
+        if (data.length == 2) {
+            Integer layer = Integer.valueOf((String) data[1]);
+
+        }
     }
 
     @Override

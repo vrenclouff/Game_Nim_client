@@ -54,19 +54,18 @@ public class SenderService implements Runnable {
         }
 
         String data = (message.getState() + " " + message.getParameters()).trim();
-        byte [] res = new byte[data.length()+3];
-        res[1] = NetworkService.STX;
+        char [] res = new char[data.length()+3];
         int i;
-        byte checksum_res = 0;
-        byte temp;
-        int sum_temp;
+        char temp;
+        long sum_temp = 0;
+
         for(i=2;i<data.length()+2;i++) {
-            temp = data.getBytes()[i-2];
+            temp = (char) data.getBytes()[i-2];
             res[i] = temp;
-            sum_temp = checksum_res + temp;
-            checksum_res = (byte)(sum_temp % NetworkService.CHECKSUM);
+            sum_temp += temp;
         }
-        res[0] = checksum_res;
+        res[0] = (char) (sum_temp % NetworkService.CHECKSUM);
+        res[1] = NetworkService.STX;
         res[i] = NetworkService.ETX;
 
         return new String(res);

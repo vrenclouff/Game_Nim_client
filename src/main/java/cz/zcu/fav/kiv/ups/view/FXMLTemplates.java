@@ -15,7 +15,4 @@ public class FXMLTemplates {
 
     public static final URL GAME = FXMLTemplates.class.getResource(FOLDER+"game.fxml");
 
-    /** DEMO sablona */
-    public static final URL DEMO = FXMLTemplates.class.getResource(FOLDER+"demo.fxml");
-
 }

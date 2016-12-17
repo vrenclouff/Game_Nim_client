@@ -36,13 +36,21 @@ public class RouterService implements Runnable {
                 Object [] params = message.getParameters();
 
                 switch (message.getState()) {
-                    case LOGIN:         {   userManager.login(params);      }   break;
-                    case ALL_USERS:     {   userManager.all_users(params);  }   break;
-                    case LOGOUT:        {   userManager.logout(params);     }   break;
-                    case GAME_INVITE:   {   gameManager.invite(params);     }   break;
-                    case GAME_JOIN:     {   gameManager.join(params);       }   break;
-                    case GAME_SETTINGS: {   gameManager.settings(params);   }   break;
-                    case IN_APP_ALERT:  {   gameManager.alert(params);      }   break;
+                    case LOGIN:             {   userManager.login(params);      }   break;
+                    case ALL_USERS:         {   userManager.all_users(params);  }   break;
+                    case LOGOUT:            {   userManager.logout(params);     }   break;
+                    case GAME_INVITE:       {   gameManager.invite(params);     }   break;
+                    case GAME_JOIN:         {   gameManager.join(params);       }   break;
+                    case GAME_SETTINGS:     {   gameManager.settings(params);   }   break;
+                    case GAME_TAKE:         {   gameManager.take(params);       }   break;
+                    case GAME_SWITCH_USER:  {   gameManager.switch_user(params);}   break;
+                    case GAME_DISCONNECT:   {   gameManager.disconnect(params); }   break;
+                    case GAME_BACK:         {   gameManager.back(params);       }   break;
+                    case GAME_END:          {   gameManager.end(params);        }   break;
+                    case GAME_FINISH:       {   gameManager.finish(params);     }   break;
+                    case GAME_CONTINUE:     { gameManager.game_continue(params);}   break;
+                    case GAME_STATE:        {   gameManager.state(params);      }   break;
+                    case IN_APP_ALERT:      {   gameManager.alert(params);      }   break;
                 }
             } catch (InterruptedException e) {
                 logger.error("RouterService::run()", e);

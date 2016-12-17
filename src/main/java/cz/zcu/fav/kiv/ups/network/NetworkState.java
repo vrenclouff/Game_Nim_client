@@ -19,6 +19,11 @@ public enum NetworkState {
     GAME_CHALLENGER,
     GAME_INVITE,
     GAME_SETTINGS,
+    GAME_DISCONNECT,
+    GAME_BACK,
+    GAME_FINISH,
+    GAME_CONTINUE,
+    GAME_STATE,
     IN_APP_ALERT,
     ;
 }

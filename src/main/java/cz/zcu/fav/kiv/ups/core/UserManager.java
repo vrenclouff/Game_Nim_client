@@ -6,6 +6,7 @@ import cz.zcu.fav.kiv.ups.network.Network;
 import cz.zcu.fav.kiv.ups.network.NetworkState;
 import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import cz.zcu.fav.kiv.ups.view.ExplorerController;
+import cz.zcu.fav.kiv.ups.view.GameController;
 import cz.zcu.fav.kiv.ups.view.ViewDTO;
 import cz.zcu.fav.kiv.ups.view.WindowManager;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +36,12 @@ public class UserManager {
     public void login(Object [] params) throws InterruptedException {
         String result = ((String) params[0]).trim();
         if (result.equalsIgnoreCase(Network.SUCCESS)) {
+            windowManager.processView(new ViewDTO(ExplorerController.class, new Object[]{}));
             sndQueue.put(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
+            if (params.length > 1 && ((String)params[1]).trim().equalsIgnoreCase("GAME")) {
+                windowManager.showAlert(InternalMsg.BACK,
+                        "Do you want back to game?");
+            }
         }else if (result.equalsIgnoreCase(Network.ERROR)) {
             windowManager.showAlert(InternalMsg.INFO, "User exists. Choose different username.");
         }
@@ -50,9 +56,7 @@ public class UserManager {
             Map<String, Object> map = objectMapper.readValue(result, new TypeReference<Map<String, Object>>(){});
             List<String> items = ((List<String>) map.get("users"));
             users = items.toArray(new String[items.size()]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {e.printStackTrace();}
         windowManager.processView(new ViewDTO(ExplorerController.class, users));
     }
 
@@ -60,7 +64,7 @@ public class UserManager {
         String result = ((String) params[0]).trim();
         if (result.equalsIgnoreCase(Network.SUCCESS)) {
             windowManager.logout();
-        }else if (result.toLowerCase().trim().equalsIgnoreCase(Network.ERROR)) {
+        }else if (result.equalsIgnoreCase(Network.ERROR)) {
             windowManager.showAlert(InternalMsg.INFO, "You can't logout now.");
         }
     }

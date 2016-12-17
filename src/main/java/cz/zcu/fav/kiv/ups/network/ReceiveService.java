@@ -83,16 +83,17 @@ public class ReceiveService implements Runnable {
         int checksum_res = 0;
         boolean start_end_mark = false;
         int checksum_init = message.charAt(0);
+        long checksum_temp = 0;
 
         /* Kontrola konecne znacky zpravy a checksumy */
         for(int i = 0; i < message.length()-2; i++)
         {
             if ((c = message.charAt(i+2)) == NetworkService.ETX) { start_end_mark = true; break; }
-            checksum_res = (c + checksum_res) % NetworkService.CHECKSUM;
+            checksum_temp += c;
             temp[i] = c;
         }
 
-        if (checksum_init != checksum_res)
+        if (checksum_init != (checksum_temp % NetworkService.CHECKSUM))
         {
             logger.debug("The message does not valid by checksum.");
             return null;

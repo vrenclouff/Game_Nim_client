@@ -31,7 +31,7 @@ public class Parameters {
     private boolean help;
 
     @Parameter(names = {"--console", "-c"}, description = "Print log messages to console")
-    private boolean log_console = true;
+    private boolean log_console = false;
 
     @Parameter(names = {"--file", "-f"}, description = "Print log messages to file")
     private boolean log_file = false;

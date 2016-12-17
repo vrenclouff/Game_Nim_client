@@ -56,6 +56,7 @@ public class WindowManager {
         setSize(controller.content.getPrefWidth(), controller.content.getPrefHeight());
         EffectUtilities.makeDraggable(stage, controller.moveBtn);
         controller.setNetwork(network);
+        controller.setLoadingWheelToCenter();
 
         this.controller = controller;
         this.stage.setScene(scene);
@@ -68,7 +69,7 @@ public class WindowManager {
 
     public void showAlert(InternalMsg state, String... content) {
         new Timer().schedule(new TimerTask() {public void run() {Platform.runLater(() -> {
-            controller.didStopLoadingWheel();
+            controller.stopLoadingWheel();
                 switch (state) {
                     case INFO: {
                         PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
@@ -84,7 +85,7 @@ public class WindowManager {
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeYes) {
                             Application.getInstance().setUsername("");
-                            Platform.runLater(() -> showLoginScreen());
+                            showLoginScreen();
                         }
                     }
                     break;
@@ -130,7 +131,10 @@ public class WindowManager {
             loginController.setNetwork(network);
             setView(loginController, loginScene);
             String username = Application.getInstance().getUsername();
-            if (StringUtils.isNotEmpty(username)) {loginController.login();}
+            if (StringUtils.isNotEmpty(username)) {
+                loginController.setUsername(username);
+                loginController.login();
+            }
         }catch (Exception e) {
             e.printStackTrace();
         }

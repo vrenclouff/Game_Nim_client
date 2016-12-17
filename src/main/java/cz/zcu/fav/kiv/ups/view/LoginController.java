@@ -65,20 +65,6 @@ public class LoginController extends BaseController {
 
         network.send(new SNDMessage(NetworkState.LOGIN, text));
         startLoadingWheel();
-/*
-        String[] names = new String[]{
-                "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-                "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-                "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-        };
-
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {public void run() {
-                    Platform.runLater(() ->
-                            WindowManager.getInstance()
-                                    .processView(new ViewDTO(ExplorerController.class, names)));
-                }}, 500);
-*/
     }
 
     @FXML
@@ -113,17 +99,7 @@ public class LoginController extends BaseController {
     @Override
     protected void showAlert(InternalMsg state, String... content) {
         assert (state != null);
-        stopLoadingWheel();
 
-        switch (state) {
-            default:
-            {
-                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
-                ButtonType buttonTypeYes = new ButtonType("Ok");
-                alert.addButtons(buttonTypeYes);
-                alert.showAndWait();
-            }break;
-        }
     }
 
     @Override

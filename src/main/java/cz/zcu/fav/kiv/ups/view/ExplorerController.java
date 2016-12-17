@@ -2,6 +2,8 @@ package cz.zcu.fav.kiv.ups.view;
 
 import cz.zcu.fav.kiv.ups.core.Application;
 import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.Network;
+import cz.zcu.fav.kiv.ups.network.NetworkService;
 import cz.zcu.fav.kiv.ups.network.NetworkState;
 import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import cz.zcu.fav.kiv.ups.view.components.CellButton;
@@ -10,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import org.apache.log4j.LogManager;
@@ -31,6 +34,8 @@ public class ExplorerController extends BaseController {
 
     private CellButton selectedCell;
 
+    private String invitedUser;
+
     @FXML
     private void initialize() {
         username.setText(Application.getInstance().getUsername());
@@ -40,8 +45,9 @@ public class ExplorerController extends BaseController {
 
     public void listViewDidPlayRow() {
         startLoadingWheel();
-        logger.info("Selected player with name: " + selectedCell.text);
-        network.send(new SNDMessage(NetworkState.GAME_CHALLENGER, selectedCell.text));
+        invitedUser = selectedCell.text.trim();
+        logger.info("Selected player with name: " + invitedUser);
+        network.send(new SNDMessage(NetworkState.GAME_CHALLENGER, invitedUser));
     }
 
     private void listViewDidSelectRow(CellButton cell) {
@@ -58,7 +64,8 @@ public class ExplorerController extends BaseController {
 
         try {
             FXMLLoader loader = new FXMLLoader(FXMLTemplates.GAME);
-            Scene scene = new Scene(loader.load());
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
             GameController controller = loader.getController();
             controller.processData(data.getObjects());
             WindowManager.getInstance().setView(controller, scene);
@@ -69,20 +76,35 @@ public class ExplorerController extends BaseController {
 
     @Override
     protected void showAlert(InternalMsg state, String... content) {
-        assert (state != null);
+        assert (state != null && content.length == 0);
 
         switch (state) {
             case INVITE:
             {
+                if (content.length < 2) { return; }
                 PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
                 ButtonType buttonTypeNo = new ButtonType("No");
                 alert.addButtons(buttonTypeYes, buttonTypeNo);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonTypeYes) {
-                    network.send(new SNDMessage(NetworkState.GAME_INVITE, ("ACCEPT" + " " + content[1])));
+                    network.send(new SNDMessage(NetworkState.GAME_INVITE, (Network.ACCEPT + " " + content[1])));
                 }else if (result.get() == buttonTypeNo) {
-                    network.send(new SNDMessage(NetworkState.GAME_INVITE, ("IGNORE" + " " + content[1])));
+                    network.send(new SNDMessage(NetworkState.GAME_INVITE, (Network.IGNORE + " " + content[1])));
+                }
+            }break;
+            case BACK:
+            {
+                if (content.length < 1) { return; }
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+                alert.addButtons(buttonTypeYes, buttonTypeNo);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeYes) {
+                    network.send(new SNDMessage(NetworkState.GAME_BACK, Network.ACCEPT));
+                }else if (result.get() == buttonTypeNo) {
+                    network.send(new SNDMessage(NetworkState.GAME_BACK, Network.IGNORE));
                 }
             }break;
         }
@@ -91,6 +113,7 @@ public class ExplorerController extends BaseController {
     @Override
     protected void processData(Object[] data) {
         stopLoadingWheel();
+        if (data == null) data = new Object[]{};
         ObservableList<CellButton> list = FXCollections.observableArrayList();
         Arrays.asList(data).stream().forEach((e -> list.add(new CellButton((String)e))));
         listOfUser.getItems().clear();
@@ -100,6 +123,8 @@ public class ExplorerController extends BaseController {
 
     @Override
     protected void didStopLoadingWheel() {
-        stopLoadingWheel();
+      //  stopLoadingWheel();
+        network.send(new SNDMessage(NetworkState.GAME_INVITE,
+                Network.IGNORE + " " + invitedUser));
     }
 }

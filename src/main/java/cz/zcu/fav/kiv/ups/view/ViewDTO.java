@@ -10,9 +10,9 @@ public class ViewDTO {
 
     private Class aClass;
 
-    private String[] objects;
+    private Object[] objects;
 
-    public ViewDTO(Class aClass , String[] objects) {
+    public ViewDTO(Class aClass , Object[] objects) {
         this.aClass = aClass;
         this.objects = objects;
     }
@@ -21,7 +21,7 @@ public class ViewDTO {
         return aClass;
     }
 
-    public String[] getObjects() {
+    public Object[] getObjects() {
         return objects;
     }
 

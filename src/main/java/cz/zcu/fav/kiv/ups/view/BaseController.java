@@ -27,6 +27,9 @@ abstract class BaseController {
     protected Button moveBtn;
 
     @FXML
+    private Pane loadingPane;
+
+    @FXML
     protected ProgressIndicator loadingWheel;
 
     @FXML
@@ -58,15 +61,13 @@ abstract class BaseController {
     }
 
     void startLoadingWheel() {
-        this.loadingWheel.setVisible(true);
-        this.loadingStopWheel.setVisible(true);
+        this.loadingPane.setVisible(true);
         this.loadingStopWheel.setOnAction(e -> didStopLoadingWheel());
         this.content.setOpacity(0.5);
     }
 
     void stopLoadingWheel() {
-        this.loadingWheel.setVisible(false);
-        this.loadingStopWheel.setVisible(false);
+        this.loadingPane.setVisible(false);
         this.content.setOpacity(1.0);
     }
 
@@ -89,6 +90,13 @@ abstract class BaseController {
     private void actualizeScene(ViewDTO data) {
         if (data != null && this.getClass() != data.getaClass()) { return; }
         this.processData(data.getObjects());
+    }
+
+    public void setLoadingWheelToCenter() {
+        double x = content.getPrefWidth() / 2 - loadingPane.getMinWidth() / 2;
+        double y = content.getPrefHeight() / 2 - loadingPane.getPrefHeight() / 2;
+        this.loadingPane.setLayoutX(x);
+        this.loadingPane.setLayoutY(y);
     }
 
     protected abstract void nextScene(ViewDTO data);

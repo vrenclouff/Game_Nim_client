@@ -9,6 +9,10 @@ public interface Network {
 
     String ERROR = "ERROR";
 
+    String ACCEPT = "ACCEPT";
+
+    String IGNORE = "IGNORE";
+
     void send(SNDMessage message);
 
     void connect();

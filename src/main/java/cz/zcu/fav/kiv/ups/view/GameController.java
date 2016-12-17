@@ -3,15 +3,20 @@ package cz.zcu.fav.kiv.ups.view;
 import cz.zcu.fav.kiv.ups.core.Application;
 import cz.zcu.fav.kiv.ups.core.GameSettings;
 import cz.zcu.fav.kiv.ups.core.InternalMsg;
+import cz.zcu.fav.kiv.ups.network.NetworkState;
+import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import cz.zcu.fav.kiv.ups.view.components.NodeUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -38,6 +43,9 @@ public class GameController extends BaseController {
     @FXML
     private Label counter;
 
+    @FXML
+    private Button endTurnButton;
+
     private List<Node> elements;
 
      public GameController() {
@@ -55,6 +63,7 @@ public class GameController extends BaseController {
 
     private void resetCounter() {
         counter.setText(String.valueOf(settings.getTaking()));
+        endTurnButton.setDisable(true);
     }
 
     public void setUsername(String username) {
@@ -67,46 +76,27 @@ public class GameController extends BaseController {
 
     @FXML
     private void endGame() {
-        logger.info("Ukoncuji hru....");
+        logger.info("Exit game.");
         PrettyAlert alert = new PrettyAlert("End game", "Do you want exit game?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeNo = new ButtonType("No");
         alert.addButtons(buttonTypeYes, buttonTypeNo);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
-            /*
-            String[] names = new String[]{
-                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-                    "Lukas", "Tomas", "Jiri", "Josef", "Vaclav",
-            };
-
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {public void run() {
-                        Platform.runLater(() ->
-                                WindowManager.getInstance()
-                                        .processView(new ViewDTO(ExplorerController.class, names)));
-                    }}, 500);
-                   */
+            network.send(new SNDMessage(NetworkState.GAME_END, StringUtils.EMPTY));
         }
     }
 
     @FXML
     private void endTurn() {
-        logger.info("Ukoncuji tah....");
-        waitForTurnStart();
-/*
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {public void run() {
-                    Platform.runLater(() ->
-                            WindowManager.getInstance().processView(
-                                    new ViewDTO(GameController.class, null)));
-                }}, 2000);
-          */
+        logger.info("End turn.");
+        network.send(new SNDMessage(NetworkState.GAME_SWITCH_USER, StringUtils.EMPTY));
     }
 
     private void waitForTurnStart() {
         this.content.setOpacity(0.8);
+        counter.setVisible(false);
+        endTurnButton.setVisible(false);
         elements.forEach(e -> {
             if (e.getStyleClass().contains("game_layer")) {
                 e.getStyleClass().remove("game_layer");
@@ -116,7 +106,8 @@ public class GameController extends BaseController {
 
     private void waitForTurnStop() {
         this.content.setOpacity(1);
-        this.counter.setText("3");
+        counter.setVisible(true);
+        endTurnButton.setVisible(true);
         elements.forEach(e -> {
             if (!e.getStyleClass().contains("game_layer")) {
                 e.getStyleClass().add("game_layer");
@@ -127,10 +118,8 @@ public class GameController extends BaseController {
     private void selectedLayer(Node layer) {
         logger.info("Selected layer: "+layer.getId());
         Integer cnt = Integer.valueOf(counter.getText());
-        if (cnt == 0) return;
-        if (((HBox)layer).getChildren().size() > 0) {
-            ((HBox) layer).getChildren().remove(0);
-            counter.setText((--cnt).toString());
+        if (cnt > 0 && ((HBox)layer).getChildren().size() > 0) {
+            network.send(new SNDMessage(NetworkState.GAME_TAKE, layer.getId()));
         }
     }
 
@@ -152,28 +141,126 @@ public class GameController extends BaseController {
 
     @Override
     protected void showAlert(InternalMsg state, String... content) {
-        assert (state != null);
+        assert (state != null && content.length == 0);
 
+        stopLoadingWheel();
+
+        switch (state) {
+            case GAME_DISCONNECT:
+            {
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+                alert.addButtons(buttonTypeYes, buttonTypeNo);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeYes) {
+                    network.send(new SNDMessage(NetworkState.GAME_END, StringUtils.EMPTY));
+                }else if (result.get() == buttonTypeNo) {
+                    startLoadingWheel();
+                }
+            }break;
+            case GAME_END:
+            {
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeOk = new ButtonType("Ok");
+                alert.addButtons(buttonTypeOk);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeOk) {
+                    network.send(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
+                }
+            }break;
+            case FINISH:
+            {
+                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
+                ButtonType buttonTypeOk = new ButtonType("Ok");
+                alert.addButtons(buttonTypeOk);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeOk) {
+                    network.send(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
+                }
+            }break;
+        }
     }
 
     @Override
     protected void processData(Object[] data) {
 
-        String state = ((String)data[0]).trim();
-        if (state.equals("START")) {
-            waitForTurnStop();
-        }else if (state.equals("STOP")) {
-            waitForTurnStart();
+         stopLoadingWheel();
+
+         if (!data[0].getClass().isEnum()) { return; }
+
+        InternalMsg state = (InternalMsg) data[0];
+
+        switch (state) {
+            case START:
+            {
+                if (data.length < 1) { return; }
+                String onTurn = ((String) data[1]).trim();
+                if (onTurn.equals("START")) {
+                    waitForTurnStop();
+                }else if (onTurn.equals("STOP")){
+                    waitForTurnStart();
+                }
+            }break;
+            case TAKE:
+            {
+                if (data.length < 2) { return; }
+                String layer = ((String) data[2]).trim();
+                for(Node el : elements){
+                    HBox item = (HBox)el;
+
+                    if (item.getId().equals(layer) && item.getChildren().size() > 0) {
+                        item.getChildren().remove(0);
+                        Integer cnt = Integer.valueOf(counter.getText());
+                        if (cnt > 0) counter.setText((--cnt).toString());
+                        endTurnButton.setDisable(false);
+                        break;
+                    }
+                }
+
+            }break;
+            case SWITCH_USER:
+            {
+                if (data.length < 1) { return; }
+                String onTurn = ((String) data[1]).trim();
+                if (onTurn.equals("START")) {
+                    resetCounter();
+                    waitForTurnStop();
+                }else if (onTurn.equals("STOP")){
+                    waitForTurnStart();
+                }
+            }break;
+            case STATE:
+            {
+                String [] numbers = ((String)data[1]).split(",");
+                for(int i = 0; i < numbers.length; i++) {
+                    HBox item = elementByID(String.valueOf(i));
+                    if (item == null) continue;
+
+                    int childrenSize = item.getChildren().size();
+                    int size = Integer.valueOf(numbers[i]);
+
+                    int delete = childrenSize - size;
+                    for(int j = 0; j < delete; j++) {
+                        item.getChildren().remove(0);
+                    }
+                }
+        //        endTurn();
+            }break;
         }
 
-        if (data.length == 2) {
-            Integer layer = Integer.valueOf((String) data[1]);
+    }
 
-        }
+    private HBox elementByID(String id) {
+         for (Node item : elements) {
+             if (item.getId().equalsIgnoreCase(id)) return (HBox)item;
+         }
+         return null;
     }
 
     @Override
     protected void didStopLoadingWheel() {
         stopLoadingWheel();
+        network.send(new SNDMessage(NetworkState.GAME_END, StringUtils.EMPTY));
     }
 }

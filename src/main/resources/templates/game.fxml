@@ -248,7 +248,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Button layoutX="186.0" layoutY="31.0" mnemonicParsing="false" onAction="#endTurn" styleClass="login" text="End turn" />
+            <Button fx:id="endTurnButton" layoutX="186.0" layoutY="31.0" mnemonicParsing="false" onAction="#endTurn" styleClass="login" text="End turn" />
             <Label fx:id="counter" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="31.0" prefHeight="27.0" prefWidth="33.0" text="3" textFill="WHITE">
                <font>
                   <Font size="22.0" />
@@ -256,7 +256,11 @@
             </Label>
          </children>
       </Pane>
-      <ProgressIndicator fx:id="loadingWheel" layoutX="152.0" layoutY="158.0" prefHeight="58.0" prefWidth="71.0" visible="false" />
-      <Button fx:id="loadingStopWheel" layoutX="182.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="13.0" prefWidth="13.0" styleClass="loading_stop_wheel" textFill="WHITE" visible="false" />
+      <Pane fx:id="loadingPane" prefHeight="70.0" prefWidth="70.0" visible="false">
+         <children>
+            <ProgressIndicator fx:id="loadingWheel" prefHeight="70.0" prefWidth="70.0" />
+            <Button fx:id="loadingStopWheel" layoutX="28.0" layoutY="28.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" styleClass="loading_stop_wheel" />
+         </children>
+      </Pane>
    </children>
 </Pane>

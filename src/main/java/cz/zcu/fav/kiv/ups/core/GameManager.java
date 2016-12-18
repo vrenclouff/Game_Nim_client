@@ -96,11 +96,7 @@ public class GameManager {
 
     public void finish(Object [] params) {
         String result = ((String) params[0]).trim();
-        if (result.equalsIgnoreCase("WON")){
-            windowManager.showAlert(InternalMsg.FINISH, "You WON!!");
-        }else if (result.equalsIgnoreCase("LOST")) {
-            windowManager.showAlert(InternalMsg.FINISH, "You LOST!!");
-        }
+        windowManager.showAlert(InternalMsg.FINISH, result);
     }
 
     public void game_continue(Object [] params) {

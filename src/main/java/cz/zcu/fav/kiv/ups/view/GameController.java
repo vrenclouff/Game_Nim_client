@@ -175,12 +175,11 @@ public class GameController extends BaseController {
             }break;
             case FINISH:
             {
-                PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
-                ButtonType buttonTypeOk = new ButtonType("Ok");
-                alert.addButtons(buttonTypeOk);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == buttonTypeOk) {
-                    network.send(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
+                String result = content[0];
+                if (result.equalsIgnoreCase("WIN")){
+                    WindowManager.getInstance().showFinishWindow(FXMLTemplates.WIN);
+                }else if (result.equalsIgnoreCase("LOSE")) {
+                    WindowManager.getInstance().showFinishWindow(FXMLTemplates.LOSE);
                 }
             }break;
         }

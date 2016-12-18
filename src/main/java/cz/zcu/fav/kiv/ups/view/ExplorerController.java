@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -64,8 +65,7 @@ public class ExplorerController extends BaseController {
 
         try {
             FXMLLoader loader = new FXMLLoader(FXMLTemplates.GAME);
-            Parent parent = loader.load();
-            Scene scene = new Scene(parent);
+            Scene scene = new Scene(loader.load());
             GameController controller = loader.getController();
             controller.processData(data.getObjects());
             WindowManager.getInstance().setView(controller, scene);

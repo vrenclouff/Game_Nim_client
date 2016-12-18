@@ -15,4 +15,8 @@ public class FXMLTemplates {
 
     public static final URL GAME = FXMLTemplates.class.getResource(FOLDER+"game.fxml");
 
+    public static final URL WIN = FXMLTemplates.class.getResource(FOLDER+"win.fxml");
+
+    public static final URL LOSE = FXMLTemplates.class.getResource(FOLDER+"lose.fxml");
+
 }

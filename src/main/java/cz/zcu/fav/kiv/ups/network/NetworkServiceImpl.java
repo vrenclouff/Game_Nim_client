@@ -18,7 +18,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
 
     private final Logger logger = LogManager.getLogger(NetworkServiceImpl.class);
 
-    private final static int MAX_UNSEND_PACKETS = 30;
+    private final static int MAX_UNSEND_PACKETS = 5;
 
     private LinkedBlockingQueue<RCVMessage> rcvQueue;
 

@@ -14,11 +14,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.text.View;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,6 +65,25 @@ public class WindowManager {
         this.controller = controller;
         this.stage.setScene(scene);
         this.stage.show();
+    }
+
+    public void showFinishWindow(URL template) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(template);
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.initOwner(stage);
+            dialogStage.setScene(new Scene(loader.load()));
+
+            FinishController controller = loader.getController();
+            controller.setNetwork(network);
+            dialogStage.showAndWait();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void processView(ViewDTO data) {
@@ -125,8 +148,7 @@ public class WindowManager {
     private void showLoginScreen() {
         try {
             FXMLLoader loader = new FXMLLoader(FXMLTemplates.LOGIN);
-            Parent parent = loader.load();
-            Scene loginScene = new Scene(parent);
+            Scene loginScene = new Scene(loader.load());
             LoginController loginController = loader.getController();
             loginController.setNetwork(network);
             setView(loginController, loginScene);

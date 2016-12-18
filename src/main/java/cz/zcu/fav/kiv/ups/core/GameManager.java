@@ -112,12 +112,11 @@ public class GameManager {
     }
 
     public void state(Object [] params) {
-        String numbers = ((String) params[1]).trim();
-        Object [] data = new Object[]{InternalMsg.STATE, numbers};
+        Object [] data = new Object[4];
+        data[0] = InternalMsg.STATE;
+        data[1] = ((String) params[0]).trim();
+        data[2] = ((String) params[1]).trim();
+        data[3] = ((String) params[2]).trim();
         windowManager.processView(new ViewDTO(GameController.class, data));
-
-        Object [] data2 = new Object[]{InternalMsg.START, params[0]};
-        windowManager.processView(new ViewDTO(GameController.class, data2));
-
     }
 }

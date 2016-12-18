@@ -232,7 +232,8 @@ public class GameController extends BaseController {
             }break;
             case STATE:
             {
-                String [] numbers = ((String)data[1]).split(",");
+                if (data.length < 3) { return; }
+                String [] numbers = ((String)data[2]).split(",");
                 for(int i = 0; i < numbers.length; i++) {
                     HBox item = elementByID(String.valueOf(i));
                     if (item == null) continue;
@@ -245,7 +246,16 @@ public class GameController extends BaseController {
                         item.getChildren().remove(0);
                     }
                 }
-        //        endTurn();
+
+                String onTurn = ((String) data[1]).trim();
+                if (onTurn.equals("START")) {
+                    waitForTurnStop();
+                }else if (onTurn.equals("STOP")){
+                    waitForTurnStart();
+                }
+
+                counter.setText(((String)data[3]).trim());
+
             }break;
         }
 

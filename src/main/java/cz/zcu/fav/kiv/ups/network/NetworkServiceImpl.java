@@ -77,11 +77,8 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.timerPong = new Timer();
             this.timerPong.schedule(new TimerTask() {
                 public void run() {
-                    try {
-                        getSenderQueue().put(new SNDMessage(NetworkState.PONG, ""));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    try {getSenderQueue().put(new SNDMessage(NetworkState.PONG, ""));}
+                    catch (InterruptedException e) {e.printStackTrace();}
                 }
             }, 1000, 3000);
 

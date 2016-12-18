@@ -43,6 +43,7 @@ public class SenderService implements Runnable {
             }
         } catch (IOException e) {
             logger.error("SenderService::IOException", e);
+            network.disconnect();
         }
         logger.debug("Thread SenderService ends.");
     }

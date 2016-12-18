@@ -59,7 +59,7 @@ public class GameController extends BaseController {
         content.setPrefHeight(MIN_HEIGHT+(settings.getLayers()*(LAYER_HEIGHT+LAYER_SPACE)));
         elements.forEach(e -> {
             int elId = Integer.valueOf(e.getId());
-            if (elId > settings.getLayers()) e.setVisible(false);
+            if (elId >= settings.getLayers()) e.setVisible(false);
             e.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectedLayer(e));
         });
         resetCounter();

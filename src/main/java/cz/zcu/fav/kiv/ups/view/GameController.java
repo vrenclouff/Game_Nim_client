@@ -56,8 +56,12 @@ public class GameController extends BaseController {
     private void initialize() {
         username.setText(Application.getInstance().getUsername());
         elements = NodeUtils.paneNodesByClass(content, new Class[]{HBox.class});
-        elements.forEach(e -> {e.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectedLayer(e));});
         content.setPrefHeight(MIN_HEIGHT+(settings.getLayers()*(LAYER_HEIGHT+LAYER_SPACE)));
+        elements.forEach(e -> {
+            int elId = Integer.valueOf(e.getId());
+            if (elId > settings.getLayers()) e.setVisible(false);
+            e.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectedLayer(e));
+        });
         resetCounter();
     }
 
@@ -254,7 +258,9 @@ public class GameController extends BaseController {
                     waitForTurnStart();
                 }
 
-                counter.setText(((String)data[3]).trim());
+                Integer cnt = Integer.valueOf(((String)data[3]).trim());
+                if (cnt == 0) endTurnButton.setDisable(false);
+                counter.setText(cnt.toString());
 
             }break;
         }

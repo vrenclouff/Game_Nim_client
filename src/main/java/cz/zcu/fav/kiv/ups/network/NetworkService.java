@@ -14,13 +14,11 @@ public interface NetworkService {
 
     char ETX = 03;
 
-    void decrementPong();
+    void resetPong();
 
     void incrementPong();
 
     void disconnect();
-
-    boolean isNetworkAvailable();
 
     LinkedBlockingQueue<RCVMessage> getReceiveQueue();
 

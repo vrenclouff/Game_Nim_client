@@ -73,23 +73,8 @@ abstract class BaseController {
 
     protected abstract void didStopLoadingWheel();
 
-    protected void setScene(ViewDTO data) {
-        assert (data != null);
-
-        if (data.getaClass() == this.getClass()) {
-            this.actualizeScene(data);
-        }else {
-            this.nextScene(data);
-        }
-    }
-
     public void setNetwork(Network network) {
         this.network = network;
-    }
-
-    private void actualizeScene(ViewDTO data) {
-        if (data != null && this.getClass() != data.getaClass()) { return; }
-        this.processData(data.getObjects());
     }
 
     public void setLoadingWheelToCenter() {
@@ -98,8 +83,6 @@ abstract class BaseController {
         this.loadingPane.setLayoutX(x);
         this.loadingPane.setLayoutY(y);
     }
-
-    protected abstract void nextScene(ViewDTO data);
 
     protected abstract void showAlert(InternalMsg state, String... content);
 

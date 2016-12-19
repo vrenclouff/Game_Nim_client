@@ -33,6 +33,7 @@ public class Application {
 
         this.username = params.getUsername();
         this.network = new NetworkServiceImpl(params.getAddress(), params.getPort());
+        this.settings = new GameSettings(4, 3);
 
         WindowManager.init(primaryStage, network);
         WindowManager.getInstance().login();

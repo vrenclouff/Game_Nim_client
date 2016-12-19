@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -39,9 +40,13 @@ public class ExplorerController extends BaseController {
 
     @FXML
     private void initialize() {
-        username.setText(Application.getInstance().getUsername());
         listOfUser.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> listViewDidSelectRow(newValue));
         listOfUser.setCellFactory(param -> new UserCell(this));
+    }
+
+    @FXML
+    private void refreshUsers() {
+        network.send(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
     }
 
     public void listViewDidPlayRow() {
@@ -52,26 +57,10 @@ public class ExplorerController extends BaseController {
     }
 
     private void listViewDidSelectRow(CellButton cell) {
-        cell.visibleButton = true;
+        if (cell != null) cell.visibleButton = true;
         if (selectedCell != null) selectedCell.visibleButton = false;
         selectedCell = cell;
         listOfUser.refresh();
-    }
-
-    @Override
-    protected void nextScene(ViewDTO data) {
-        if (data != null && GameController.class != data.getaClass()) {return;}
-        stopLoadingWheel();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(FXMLTemplates.GAME);
-            Scene scene = new Scene(loader.load());
-            GameController controller = loader.getController();
-            controller.processData(data.getObjects());
-            WindowManager.getInstance().setView(controller, scene);
-        } catch (IOException e) {
-            logger.error("GameController::nextScene()", e);
-        }
     }
 
     @Override
@@ -113,6 +102,7 @@ public class ExplorerController extends BaseController {
     @Override
     protected void processData(Object[] data) {
         stopLoadingWheel();
+        username.setText(Application.getInstance().getUsername());
         if (data == null) data = new Object[]{};
         ObservableList<CellButton> list = FXCollections.observableArrayList();
         Arrays.asList(data).stream().forEach((e -> list.add(new CellButton((String)e))));
@@ -123,7 +113,7 @@ public class ExplorerController extends BaseController {
 
     @Override
     protected void didStopLoadingWheel() {
-      //  stopLoadingWheel();
+        stopLoadingWheel();
         network.send(new SNDMessage(NetworkState.GAME_INVITE,
                 Network.IGNORE + " " + invitedUser));
     }

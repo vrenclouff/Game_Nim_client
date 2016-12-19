@@ -25,8 +25,6 @@ public class LoginController extends BaseController {
 
     private static final Character[] UNSUPPORTED_CHARACTERS = {' '};
 
-    private final Logger logger = LogManager.getLogger(LoginController.class);
-
     @FXML
     private TextField username;
 
@@ -62,7 +60,6 @@ public class LoginController extends BaseController {
         validationMessage.setText(StringUtils.EMPTY);
         Application.getInstance().setUsername(text);
 
-
         network.send(new SNDMessage(NetworkState.LOGIN, text));
         startLoadingWheel();
     }
@@ -81,29 +78,10 @@ public class LoginController extends BaseController {
     }
 
     @Override
-    protected void nextScene(ViewDTO data) {
-        if (data != null && ExplorerController.class != data.getaClass()) {return;}
-        stopLoadingWheel();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(FXMLTemplates.EXPLORER);
-            Scene scene = new Scene(loader.load());
-            ExplorerController controller = loader.getController();
-            controller.processData(data.getObjects());
-            WindowManager.getInstance().setView(controller, scene);
-        } catch (IOException e) {
-            logger.error("LoginController::nextScene()", e);
-        }
-    }
+    protected void showAlert(InternalMsg state, String... content) {}
 
     @Override
-    protected void showAlert(InternalMsg state, String... content) {
-        assert (state != null);
-
-    }
-
-    @Override
-    protected void processData(Object[] data) {}
+    protected void processData(Object[] data) { stopLoadingWheel(); }
 
     @Override
     protected void didStopLoadingWheel() {

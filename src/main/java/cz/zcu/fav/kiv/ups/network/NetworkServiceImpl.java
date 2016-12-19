@@ -123,8 +123,8 @@ public class NetworkServiceImpl implements Network, NetworkService {
     }
 
     @Override
-    public void decrementPong() {
-        this.unsendPackets--;
+    public void resetPong() {
+        this.unsendPackets = 0;
     }
 
     @Override
@@ -144,14 +144,9 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.socket.close();
             this.rcvService.stop();
             this.sndService.stop();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {e.printStackTrace();}
-    }
-
-    @Override
-    public boolean isNetworkAvailable() {
-        return this.networkAvailable;
+        } catch (IOException | InterruptedException e) {
+            logger.error("", e);
+        }
     }
 
     @Override

@@ -19,13 +19,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.commons.lang.StringUtils;
+import org.omg.CORBA.INITIALIZE;
 
 import javax.swing.text.View;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by vrenclouff on 07.12.16.
@@ -40,10 +40,27 @@ public class WindowManager {
 
     public BaseController controller;
 
+    public Map<Class<? extends BaseController>, cz.zcu.fav.kiv.ups.view.View> views;
+
+    public void initScenes() {
+        this.views = new HashMap<>();
+
+        createView(FXMLTemplates.LOGIN);
+        createView(FXMLTemplates.EXPLORER);
+        createView(FXMLTemplates.GAME);
+
+        if (!views.containsKey(LoginController.class) ||
+                !views.containsKey(ExplorerController.class) ||
+                !views.containsKey(GameController.class)) {
+            System.exit(1);
+        }
+    }
+
     public static void init(Stage stage, Network network) {
         INSTANCE.stage = stage;
         INSTANCE.network = network;
 
+        INSTANCE.initScenes();
         INSTANCE.stage.initStyle(StageStyle.UNDECORATED);
     }
 
@@ -51,11 +68,6 @@ public class WindowManager {
         return INSTANCE;
     }
 
-    /**
-     * Nastavi aktualni obrazovku
-     * @param controller - controller obshlujujici obrazovku
-     * @param scene - obsah obrazovky
-     */
     public void setView(BaseController controller, Scene scene) {
         setSize(controller.content.getPrefWidth(), controller.content.getPrefHeight());
         EffectUtilities.makeDraggable(stage, controller.moveBtn);
@@ -87,7 +99,11 @@ public class WindowManager {
     }
 
     public void processView(ViewDTO data) {
-        Platform.runLater(() -> controller.setScene(data));
+        Platform.runLater(() ->{
+            cz.zcu.fav.kiv.ups.view.View view = views.get(data.getaClass());
+            view.getController().processData(data.getObjects());
+            setView(view.getController(), view.getScene());
+        });
     }
 
     public void showAlert(InternalMsg state, String... content) {
@@ -107,8 +123,7 @@ public class WindowManager {
                         alert.addButtons(buttonTypeYes);
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeYes) {
-                            Application.getInstance().setUsername("");
-                            showLoginScreen();
+                            login();
                         }
                     }
                     break;
@@ -123,12 +138,14 @@ public class WindowManager {
     public void logout() {
         new Timer().schedule(new TimerTask() {
             public void run() {
-                Platform.runLater(() -> showLoginScreen());
+                login();
             }
         }, 500);
     }
 
-    public void login() { Platform.runLater(() -> showLoginScreen()); }
+    public void login() {
+        processView(new ViewDTO(LoginController.class, new Object[]{}));
+    }
 
     public void closeWindow() {
         this.stage.setOnCloseRequest(e -> Platform.exit());
@@ -145,19 +162,15 @@ public class WindowManager {
         this.stage.setHeight(height);
     }
 
-    private void showLoginScreen() {
+    private void createView(URL template){
+        if (template == null) return;
+
         try {
-            FXMLLoader loader = new FXMLLoader(FXMLTemplates.LOGIN);
-            Scene loginScene = new Scene(loader.load());
-            LoginController loginController = loader.getController();
-            loginController.setNetwork(network);
-            setView(loginController, loginScene);
-            String username = Application.getInstance().getUsername();
-            if (StringUtils.isNotEmpty(username)) {
-                loginController.setUsername(username);
-                loginController.login();
-            }
-        }catch (Exception e) {
+            FXMLLoader loader = new FXMLLoader(template);
+            Scene scene = new Scene(loader.load());
+            BaseController controller = loader.getController();
+            views.put(controller.getClass(), new cz.zcu.fav.kiv.ups.view.View(controller, scene));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

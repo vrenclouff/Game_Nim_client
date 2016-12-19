@@ -40,7 +40,7 @@ public class ReceiveService implements Runnable {
                     RCVMessage message = createValidatedMessage(new String(buffer, 0, count));
                     if (message != null) {
                         if (message.getState() == NetworkState.PONG) {
-                            network.decrementPong();
+                            network.resetPong();
                         } else {
                             try {
                                 logger.debug("Putting message to rcvQueue.");
@@ -54,9 +54,8 @@ public class ReceiveService implements Runnable {
                         break;
                 }
             }
-        } catch (IOException e) {
-         //   logger.error("ReceiveService::IOException", e);
-        }
+        } catch (IOException e) {}
+
         logger.debug("Thread ReceiveService ends.");
     }
 

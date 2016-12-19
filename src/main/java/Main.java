@@ -1,5 +1,6 @@
 
 import cz.zcu.fav.kiv.ups.core.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.apache.log4j.*;
 
@@ -10,7 +11,6 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         cz.zcu.fav.kiv.ups.core.Parameters params = new cz.zcu.fav.kiv.ups.core.Parameters(Arrays.copyOf(
                 getParameters().getRaw().toArray(), getParameters().getRaw().size(), String[].class));
 
@@ -19,6 +19,7 @@ public class Main extends javafx.application.Application {
     }
 
     private void initLogger(int loglevel, boolean console, boolean file) {
+        Logger.getRootLogger().setLevel(Level.OFF);
         try {
             String filePath = "logfile.log";
             PatternLayout layout = new PatternLayout("%d [%-5p] %m%n");

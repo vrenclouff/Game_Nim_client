@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.apache.commons.lang.StringUtils;
@@ -48,18 +49,12 @@ public class GameController extends BaseController {
 
     private List<Node> elements;
 
-     public GameController() {
-        this.settings = Application.getInstance().getSettings();
-     }
 
     @FXML
     private void initialize() {
-        username.setText(Application.getInstance().getUsername());
+        settings = Application.getInstance().getSettings();
         elements = NodeUtils.paneNodesByClass(content, new Class[]{HBox.class});
-        content.setPrefHeight(MIN_HEIGHT+(settings.getLayers()*(LAYER_HEIGHT+LAYER_SPACE)));
         elements.forEach(e -> {
-            int elId = Integer.valueOf(e.getId());
-            if (elId >= settings.getLayers()) e.setVisible(false);
             e.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectedLayer(e));
         });
         resetCounter();
@@ -120,26 +115,10 @@ public class GameController extends BaseController {
     }
 
     private void selectedLayer(Node layer) {
-        logger.info("Selected layer: "+layer.getId());
         Integer cnt = Integer.valueOf(counter.getText());
         if (cnt > 0 && ((HBox)layer).getChildren().size() > 0) {
+            logger.info("Selected layer: "+layer.getId());
             network.send(new SNDMessage(NetworkState.GAME_TAKE, layer.getId()));
-        }
-    }
-
-    @Override
-    protected void nextScene(ViewDTO data) {
-        if (data != null && ExplorerController.class != data.getaClass()) { return; }
-        stopLoadingWheel();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(FXMLTemplates.EXPLORER);
-            Scene scene = new Scene(loader.load());
-            ExplorerController controller = loader.getController();
-            controller.processData(data.getObjects());
-            WindowManager.getInstance().setView(controller, scene);
-        } catch (IOException e) {
-            logger.error("GameController::nextScene()", e);
         }
     }
 
@@ -189,8 +168,9 @@ public class GameController extends BaseController {
     protected void processData(Object[] data) {
 
          stopLoadingWheel();
+        username.setText(Application.getInstance().getUsername());
 
-         if (!data[0].getClass().isEnum()) { return; }
+        if (!data[0].getClass().isEnum()) { return; }
 
         InternalMsg state = (InternalMsg) data[0];
 
@@ -245,8 +225,19 @@ public class GameController extends BaseController {
                     int size = Integer.valueOf(numbers[i]);
 
                     int delete = childrenSize - size;
-                    for(int j = 0; j < delete; j++) {
-                        item.getChildren().remove(0);
+                    int add = size - childrenSize;
+
+                    if (delete > 0){
+                        for(int j = 0; j < delete; j++) {
+                            item.getChildren().remove(0);
+                        }
+                    }else if (add > 0) {
+                        for(int j = 0; j < add; j++) {
+                            ImageView image =  new ImageView("/images/match.png");
+                            image.setFitHeight(70);
+                            image.setFitWidth(20);
+                            item.getChildren().add(0, image);
+                        }
                     }
                 }
 
@@ -260,6 +251,8 @@ public class GameController extends BaseController {
                 Integer cnt = Integer.valueOf(((String)data[3]).trim());
                 if (cnt == 0) endTurnButton.setDisable(false);
                 counter.setText(cnt.toString());
+
+                content.setPrefHeight(MIN_HEIGHT+(numbers.length*(LAYER_HEIGHT+LAYER_SPACE)));
 
             }break;
         }

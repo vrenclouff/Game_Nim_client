@@ -37,10 +37,11 @@ public class UserManager {
         String result = ((String) params[0]).trim();
         if (result.equalsIgnoreCase(Network.SUCCESS)) {
             windowManager.processView(new ViewDTO(ExplorerController.class, new Object[]{}));
-            sndQueue.put(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
             if (params.length > 1 && ((String)params[1]).trim().equalsIgnoreCase("GAME")) {
                 windowManager.showAlert(InternalMsg.BACK,
                         "Do you want back to game?");
+            }else {
+                sndQueue.put(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
             }
         }else if (result.equalsIgnoreCase(Network.ERROR)) {
             windowManager.showAlert(InternalMsg.INFO, "User exists. Choose different username.");

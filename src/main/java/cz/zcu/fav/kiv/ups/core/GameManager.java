@@ -6,6 +6,7 @@ import cz.zcu.fav.kiv.ups.network.Network;
 import cz.zcu.fav.kiv.ups.view.GameController;
 import cz.zcu.fav.kiv.ups.view.ViewDTO;
 import cz.zcu.fav.kiv.ups.view.WindowManager;
+import cz.zcu.fav.kiv.ups.view.components.ViewUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,9 +37,11 @@ public class GameManager {
     }
 
     public void join(Object [] params) {
-        Object [] data = new Object[params.length + 1];
-        data[0] = InternalMsg.START;
-        for(int i=1;i<params.length+1;i++){data[i] = params[i-1];}
+        Object [] data = new Object[4];
+        data[0] = InternalMsg.STATE;
+        data[1] = ((String)params[0]).trim();
+        data[2] = ViewUtils.matchesInLayers(((String)params[1]).trim());
+        data[3] = ((String)params[2]).trim();
         windowManager.processView(new ViewDTO(GameController.class, data));
     }
 
@@ -62,10 +65,13 @@ public class GameManager {
     }
 
     public void take(Object [] params) {
-        Object [] data = new Object[params.length + 1];
-        data[0] = InternalMsg.TAKE;
-        for(int i=1;i<params.length+1;i++){data[i] = params[i-1];}
-        windowManager.processView(new ViewDTO(GameController.class, data));
+        String result = ((String)params[0]).trim();
+        if (!result.equalsIgnoreCase("ERROR")) {
+            Object [] data = new Object[params.length + 1];
+            data[0] = InternalMsg.TAKE;
+            for(int i=1;i<params.length+1;i++){data[i] = params[i-1];}
+            windowManager.processView(new ViewDTO(GameController.class,data));
+        }
     }
 
     public void switch_user(Object [] params) {

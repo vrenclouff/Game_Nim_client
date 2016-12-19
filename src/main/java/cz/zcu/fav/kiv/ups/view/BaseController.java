@@ -93,7 +93,7 @@ abstract class BaseController {
     }
 
     public void setLoadingWheelToCenter() {
-        double x = content.getPrefWidth() / 2 - loadingPane.getMinWidth() / 2;
+        double x = content.getPrefWidth() / 2 - loadingPane.getPrefWidth() / 2;
         double y = content.getPrefHeight() / 2 - loadingPane.getPrefHeight() / 2;
         this.loadingPane.setLayoutX(x);
         this.loadingPane.setLayoutY(y);

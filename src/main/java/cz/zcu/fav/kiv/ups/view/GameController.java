@@ -188,6 +188,13 @@ public class GameController extends BaseController {
             case TAKE:
             {
                 if (data.length < 2) { return; }
+                String onTurn = ((String) data[1]).trim();
+                if (onTurn.equals("START")) {
+                    waitForTurnStop();
+                }else if (onTurn.equals("STOP")){
+                    waitForTurnStart();
+                }
+
                 String layer = ((String) data[2]).trim();
                 for(Node el : elements){
                     HBox item = (HBox)el;

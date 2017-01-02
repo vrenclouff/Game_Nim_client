@@ -1,29 +1,20 @@
 package cz.zcu.fav.kiv.ups.view;
 
-import cz.zcu.fav.kiv.ups.core.Application;
 import cz.zcu.fav.kiv.ups.core.InternalMsg;
 import cz.zcu.fav.kiv.ups.network.Network;
-import cz.zcu.fav.kiv.ups.network.NetworkState;
-import cz.zcu.fav.kiv.ups.network.SNDMessage;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.INITIALIZE;
 
-import javax.swing.text.View;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.*;
 
@@ -99,10 +90,14 @@ public class WindowManager {
     }
 
     public void processView(ViewDTO data) {
-        Platform.runLater(() ->{
-            cz.zcu.fav.kiv.ups.view.View view = views.get(data.getaClass());
-            view.getController().processData(data.getObjects());
-            setView(view.getController(), view.getScene());
+        Platform.runLater(() -> {
+            if (controller != null && data.getaClass().equals(controller.getClass())) {
+                controller.processData(data.getObjects());
+            }else {
+                cz.zcu.fav.kiv.ups.view.View view = views.get(data.getaClass());
+                view.getController().processData(data.getObjects());
+                setView(view.getController(), view.getScene());
+            }
         });
     }
 

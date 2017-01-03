@@ -66,6 +66,10 @@ public class ReceiveService implements Runnable {
 
         logger.debug("Validation receive message: " + message);
 
+        if (message.equalsIgnoreCase(StringUtils.EMPTY)) {
+            return;
+        }
+
         /* Kontrola minimalni delky zpravy */
         if (message.length() < 3) {
             logger.debug("The message does not have correct length.");return;
@@ -121,8 +125,7 @@ public class ReceiveService implements Runnable {
         messageList.add(new RCVMessage(state, params));
 
         String nextMsg = message.substring(validatedMessage.length() + 1 + 1 + 1);
-        if (nextMsg.equals(StringUtils.EMPTY)) return;
-        else createValidatedMessage(messageList, nextMsg);
+        createValidatedMessage(messageList, nextMsg);
     }
 
     public void start() {

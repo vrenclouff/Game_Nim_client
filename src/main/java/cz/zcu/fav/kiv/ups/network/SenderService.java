@@ -34,9 +34,12 @@ public class SenderService implements Runnable {
                 try {
                     logger.debug("Waiting for message for send.");
                     SNDMessage message = network.getSenderQueue().take();
-                    if (message.getState() == NetworkState.PONG) network.incrementPong();
                     String msg = createValidatedMessage(message);
-                    logger.debug("Sending message: "+msg);
+                    if (message.getState() == NetworkState.PONG) {
+                        network.incrementPong();
+                    }else {
+                        logger.info("Sending message: "+msg);
+                    }
                     stream.write(msg.getBytes());
                     stream.flush();
                 } catch (InterruptedException e) {break;}

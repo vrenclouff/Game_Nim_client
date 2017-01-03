@@ -36,14 +36,13 @@ public class ReceiveService implements Runnable {
                 byte[] buffer = new byte[1024];
                 int count = stream.read(buffer);
                 if (count > 0) {
-                    logger.debug("Receive message " + buffer);
                     RCVMessage message = createValidatedMessage(new String(buffer, 0, count));
                     if (message != null) {
                         if (message.getState() == NetworkState.PONG) {
                             network.resetPong();
                         } else {
                             try {
-                                logger.debug("Putting message to rcvQueue.");
+                                logger.info("Receive message " + buffer);
                                 network.getReceiveQueue().put(message);
                             } catch (InterruptedException e) {e.printStackTrace();}
                         }

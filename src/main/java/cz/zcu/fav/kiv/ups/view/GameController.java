@@ -76,9 +76,9 @@ public class GameController extends BaseController {
     @FXML
     private void endGame() {
         logger.info("Exit game.");
-        PrettyAlert alert = new PrettyAlert("End game", "Do you want exit game?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
+        PrettyAlert alert = new PrettyAlert("Konec hry", "Chcete ukončit hru?");
+        ButtonType buttonTypeYes = new ButtonType("Ano");
+        ButtonType buttonTypeNo = new ButtonType("Ne");
         alert.addButtons(buttonTypeYes, buttonTypeNo);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
@@ -131,8 +131,8 @@ public class GameController extends BaseController {
             case GAME_DISCONNECT:
             {
                 PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
-                ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("No");
+                ButtonType buttonTypeYes = new ButtonType("Ano");
+                ButtonType buttonTypeNo = new ButtonType("Ne");
                 alert.addButtons(buttonTypeYes, buttonTypeNo);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonTypeYes) {

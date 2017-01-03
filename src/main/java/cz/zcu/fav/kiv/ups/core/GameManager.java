@@ -32,7 +32,7 @@ public class GameManager {
     public void invite(Object [] params) {
         String userRecipient = ((String)params[0]).trim();
         windowManager.showAlert(InternalMsg.INVITE,
-                "Player "+userRecipient+" has you invited to game. Do you want accept this?",
+                "Chcete přijmout požadavek do hry od hráče "+userRecipient+"?",
                 userRecipient);
     }
 
@@ -83,20 +83,20 @@ public class GameManager {
 
     public void disconnect(Object [] params) {
         windowManager.showAlert(InternalMsg.GAME_DISCONNECT,
-                "Second player was disconnected. Do you want exit the game?");
+                "Druhý hráč se odpojil. Pokračovat ve hře?");
     }
 
     public void back(Object [] params) {
         windowManager.showAlert(InternalMsg.BACK,
-                "Do you want back to game?");
+                "Chcete se vrátit do hry?");
     }
 
     public void end(Object [] params) throws InterruptedException {
         String result = ((String) params[0]).trim();
         if (result.equalsIgnoreCase(Network.SUCCESS)) {
-            windowManager.showAlert(InternalMsg.GAME_END, "The game was exited.");
+            windowManager.showAlert(InternalMsg.GAME_END, "Hra byla ukončena.");
         }else if (result.equalsIgnoreCase(Network.ERROR)) {
-            windowManager.showAlert(InternalMsg.INFO, "The game cannot be exited.");
+            windowManager.showAlert(InternalMsg.INFO, "Hra nemůže být ukončena.");
         }
     }
 

@@ -49,9 +49,9 @@ abstract class BaseController {
 
     @FXML
     private void logout() {
-        PrettyAlert alert = new PrettyAlert("Logout", "Do you want logout from application?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
+        PrettyAlert alert = new PrettyAlert("Odhlášení", "Chcete se odhlásit z aplikace?");
+        ButtonType buttonTypeYes = new ButtonType("Ano");
+        ButtonType buttonTypeNo = new ButtonType("Ne");
         alert.addButtons(buttonTypeYes, buttonTypeNo);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes) {

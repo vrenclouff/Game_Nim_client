@@ -4,13 +4,13 @@ package cz.zcu.fav.kiv.ups.core;
  * Created by vrenclouff on 10.12.16.
  */
 public enum InternalMsg {
-    SERVER_AVAILABLE("Server is not available"),
-    INFO("Info"),
-    INVITE("Invite to game"),
-    GAME_DISCONNECT("Disconnected from game"),
-    BACK("Back to game"),
-    GAME_END("End of game"),
-    FINISH("End of game"),
+    SERVER_AVAILABLE("Server není dostupný"),
+    INFO("Informace"),
+    INVITE("Pozvání do hry"),
+    GAME_DISCONNECT("Odpojen ze hry"),
+    BACK("Zpět do hry"),
+    GAME_END("Konec hry"),
+    FINISH("Konec hry"),
 
     SWITCH_USER("SWITCH_USER"),
     START("START"),

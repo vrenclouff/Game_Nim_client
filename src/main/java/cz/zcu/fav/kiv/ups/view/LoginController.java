@@ -46,7 +46,7 @@ public class LoginController extends BaseController {
         String text = getUsername();
 
         if (StringUtils.isEmpty(text)) {
-            validationMessage.setText("Username is required."); return;
+            validationMessage.setText("Jméno je povinné."); return;
         }
 
         text = text.trim();
@@ -54,7 +54,7 @@ public class LoginController extends BaseController {
         List<Character> second = Arrays.asList(UNSUPPORTED_CHARACTERS);
         boolean isCommon = Collections.disjoint(second, first);
         if (!isCommon) {
-            validationMessage.setText("Unsupported characters."); return;
+            validationMessage.setText("Nepovolený znak ' '"); return;
         }
 
         validationMessage.setText(StringUtils.EMPTY);

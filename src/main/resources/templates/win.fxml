@@ -16,7 +16,7 @@
             <Image url="@../images/win.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="39.0" layoutY="122.0" prefHeight="17.0" prefWidth="212.0" text="You win!" textFill="WHITE">
+      <Label alignment="CENTER" layoutX="39.0" layoutY="122.0" prefHeight="17.0" prefWidth="212.0" text="Vyhrál jsi!" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>

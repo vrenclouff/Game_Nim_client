@@ -92,7 +92,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
             logger.warn("Server is not available.");
             try {
                 getReceiveQueue().put(new RCVMessage(NetworkState.IN_APP_ALERT,
-                        InternalMsg.SERVER_AVAILABLE, "Network is not available."));
+                        InternalMsg.SERVER_AVAILABLE, "Server je nedostupný."));
             } catch (InterruptedException e1) {
                 logger.error("Cannot add message to rcvQueue.");
             }
@@ -138,7 +138,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.networkAvailable = false;
             this.unsendPackets = 0;
             getReceiveQueue().put(new RCVMessage(NetworkState.IN_APP_ALERT,
-                    InternalMsg.SERVER_AVAILABLE, "Network is not available."));
+                    InternalMsg.SERVER_AVAILABLE, "Server je nedostupný."));
             this.socket.close();
             this.rcvService.stop();
             this.sndService.stop();

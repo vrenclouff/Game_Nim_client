@@ -1,7 +1,6 @@
 package cz.zcu.fav.kiv.ups.view;
 
 
-import cz.zcu.fav.kiv.ups.core.InternalMsg;
 
 /**
  * Created by vrenclouff on 07.12.16.

@@ -39,12 +39,12 @@ public class UserManager {
             windowManager.processView(new ViewDTO(ExplorerController.class, new Object[]{}));
             if (params.length > 1 && ((String)params[1]).trim().equalsIgnoreCase("GAME")) {
                 windowManager.showAlert(InternalMsg.BACK,
-                        "Do you want back to game?");
+                        "Chcete se vrátit do hry?");
             }else {
                 sndQueue.put(new SNDMessage(NetworkState.ALL_USERS, StringUtils.EMPTY));
             }
         }else if (result.equalsIgnoreCase(Network.ERROR)) {
-            windowManager.showAlert(InternalMsg.INFO, "User exists. Choose different username.");
+            windowManager.showAlert(InternalMsg.INFO, "Uživatel existuje. Vyberte jiné jméno");
         }
     }
 
@@ -66,7 +66,7 @@ public class UserManager {
         if (result.equalsIgnoreCase(Network.SUCCESS)) {
             windowManager.logout();
         }else if (result.equalsIgnoreCase(Network.ERROR)) {
-            windowManager.showAlert(InternalMsg.INFO, "You can't logout now.");
+            windowManager.showAlert(InternalMsg.INFO, "Nelze se odhlásit");
         }
     }
 }

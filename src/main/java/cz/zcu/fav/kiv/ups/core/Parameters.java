@@ -18,22 +18,22 @@ public class Parameters {
             "\t\t3 - ERROR")
     private Integer verbose = 1;
 
-    @Parameter(names={"--address", "-a"}, required = true, description = "Define IP address or hostname to server")
+    @Parameter(names={"--address", "-a"}, required = true, description = "Adresa serveru")
     private String address;
 
-    @Parameter(names={"--port", "-p"}, required = true, description = "Define port to server")
+    @Parameter(names={"--port", "-p"}, required = true, description = "Port serveru")
     private Integer port;
 
-    @Parameter(names = {"--user", "-u"}, description = "Username for login to server")
+    @Parameter(names = {"--user", "-u"}, description = "Uživatelské jméno pro přihlášení")
     private String username;
 
-    @Parameter(names = {"--help", "-h"}, help = true, description = "Print help")
+    @Parameter(names = {"--help", "-h"}, help = true, description = "Nápověda")
     private boolean help;
 
-    @Parameter(names = {"--console", "-c"}, description = "Print log messages to console")
+    @Parameter(names = {"--console", "-c"}, description = "Povolení výpisu logu do konzole")
     private boolean log_console = false;
 
-    @Parameter(names = {"--file", "-f"}, description = "Print log messages to file")
+    @Parameter(names = {"--file", "-f"}, description = "Povolení výpisu logu do souboru")
     private boolean log_file = false;
 
     public Parameters(String [] args) {

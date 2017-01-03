@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -9,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="484.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="484.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.fav.kiv.ups.view.LoginController">
    <children>
       <Pane fx:id="content" prefHeight="328.0" prefWidth="484.0" styleClass="background">
          <children>
@@ -22,22 +27,22 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </Button>
-            <Label alignment="CENTER_RIGHT" layoutX="84.0" layoutY="160.0" prefHeight="27.0" prefWidth="84.0" text="Username" textFill="WHITE">
+            <Label alignment="CENTER_RIGHT" layoutX="84.0" layoutY="160.0" prefHeight="27.0" prefWidth="84.0" text="Jméno" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="30.0" layoutY="38.0" prefHeight="39.0" prefWidth="223.0" text="Welcome" textFill="WHITE">
+            <Label layoutX="30.0" layoutY="38.0" prefHeight="39.0" prefWidth="223.0" text="Vítejte" textFill="WHITE">
                <font>
                   <Font size="39.0" />
                </font>
             </Label>
-            <Button layoutX="326.0" layoutY="211.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="71.0" text="Login">
+            <Button layoutX="313.0" layoutY="211.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="84.0" text="Přihlásit">
                <styleClass>
                   <String fx:value="button" />
                   <String fx:value="login" />
                </styleClass></Button>
-            <Label layoutX="90.0" layoutY="84.0" prefHeight="39.0" prefWidth="223.0" text="Nim Game" textFill="WHITE">
+            <Label layoutX="90.0" layoutY="84.0" prefHeight="39.0" prefWidth="223.0" text="Hra Nim" textFill="WHITE">
                <font>
                   <Font size="30.0" />
                </font>

@@ -72,8 +72,8 @@ public class ExplorerController extends BaseController {
             {
                 if (content.length < 2) { return; }
                 PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
-                ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("No");
+                ButtonType buttonTypeYes = new ButtonType("Ano");
+                ButtonType buttonTypeNo = new ButtonType("Ne");
                 alert.addButtons(buttonTypeYes, buttonTypeNo);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonTypeYes) {
@@ -86,8 +86,8 @@ public class ExplorerController extends BaseController {
             {
                 if (content.length < 1) { return; }
                 PrettyAlert alert = new PrettyAlert(state.toString(), content[0]);
-                ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("No");
+                ButtonType buttonTypeYes = new ButtonType("Ano");
+                ButtonType buttonTypeNo = new ButtonType("Ne");
                 alert.addButtons(buttonTypeYes, buttonTypeNo);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonTypeYes) {

@@ -54,9 +54,7 @@ public class ReceiveService implements Runnable {
                         }
                     }
                 } else {
-                        logger.error("ReceiveService empty message.");
-                        network.disconnect();
-                        break;
+                        network.disconnect(); break;
                 }
             }
         } catch (IOException e) {}
@@ -67,6 +65,13 @@ public class ReceiveService implements Runnable {
     private void createValidatedMessage(List<RCVMessage> messageList, String message) {
 
         logger.debug("Validation receive message: " + message);
+
+        for(int i = 0; i < message.length(); i++ ) {
+            char c = message.charAt(i);
+            if (c == NetworkService.STX) {
+                message = message.substring(i-1); break;
+            }
+        }
 
         /* Kontrola minimalni delky zpravy */
         if (message.length() < 3) {

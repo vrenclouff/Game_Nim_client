@@ -68,7 +68,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
             logger.debug("Settings socket streams.");
             this.rcvService.setStream(socket.getInputStream());
             this.sndService.setStream(socket.getOutputStream());
-
+/*
             logger.debug("Start timer for watch network.");
             this.timerWatch = new Timer();
             this.timerWatch.schedule(new TimerTask() {public void run() {watchNetwork();}}, 1000, 2000);
@@ -81,7 +81,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
                     catch (InterruptedException e) {e.printStackTrace();}
                 }
             }, 1000, 3000);
-
+*/
             logger.debug("Start receive thread.");
             this.rcvService.start();
 

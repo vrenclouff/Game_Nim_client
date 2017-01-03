@@ -42,7 +42,7 @@ public class ReceiveService implements Runnable {
                             network.resetPong();
                         } else {
                             try {
-                                logger.info("Receive message " + buffer);
+                                logger.info("Receive message " + message.getState()+" "+Arrays.toString(message.getParameters()));
                                 network.getReceiveQueue().put(message);
                             } catch (InterruptedException e) {e.printStackTrace();}
                         }

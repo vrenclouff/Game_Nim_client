@@ -39,8 +39,10 @@ public class ReceiveService implements Runnable {
                 byte[] buffer = new byte[1024];
                 int count = stream.read(buffer);
                 if (count > 0) {
+                    String receiveMessage = new String(buffer, 0, count);
+                    logger.debug(receiveMessage);
                     List<RCVMessage> messageList = new ArrayList<>();
-                    createValidatedMessage(messageList, new String(buffer, 0, count));
+                    createValidatedMessage(messageList, receiveMessage);
                     for(RCVMessage message : messageList) {
                         if (message.getState() == NetworkState.PONG) {
                             network.resetPong();
@@ -66,10 +68,6 @@ public class ReceiveService implements Runnable {
 
         logger.debug("Validation receive message: " + message);
 
-        if (message.equalsIgnoreCase(StringUtils.EMPTY)) {
-            return;
-        }
-
         /* Kontrola minimalni delky zpravy */
         if (message.length() < 3) {
             logger.debug("The message does not have correct length.");return;
@@ -83,7 +81,6 @@ public class ReceiveService implements Runnable {
         char temp[] = new char[message.length()];
         char c;
         int i;
-        int checksum_res = 0;
         boolean start_end_mark = false;
         int checksum_init = message.charAt(0);
         long checksum_temp = 0;

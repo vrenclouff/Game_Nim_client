@@ -10,7 +10,7 @@ public interface NetworkService {
 
     char STX = 02;
 
-    char CHECKSUM = 64;
+    char CHECKSUM = 128;
 
     char ETX = 03;
 

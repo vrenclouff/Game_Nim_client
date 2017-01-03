@@ -142,8 +142,8 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.socket.close();
             this.rcvService.stop();
             this.sndService.stop();
-            this.timerWatch.cancel();
-            this.timerPong.cancel();
+            if (timerWatch != null) this.timerWatch.cancel();
+            if (timerPong != null) this.timerPong.cancel();
         } catch (IOException | InterruptedException e) {
        //     logger.error("", e);
         }

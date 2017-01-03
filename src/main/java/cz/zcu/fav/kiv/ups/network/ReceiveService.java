@@ -99,8 +99,8 @@ public class ReceiveService implements Runnable {
         temp[i] = '\0';
         String validatedMessage = new String(temp).trim();
 
-        long checksum_result = checksum_temp % NetworkService.CHECKSUM;
-        if (checksum_result == 0) checksum_result = NetworkService.CHECKSUM;
+        char checksum_result = (char)(checksum_temp % NetworkService.CHECKSUM);
+        checksum_result = (char)((checksum_result + 1) % Byte.MAX_VALUE);
         if (checksum_init != checksum_result) {
             logger.debug("The message does not valid by checksum.");return;
         }

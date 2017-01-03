@@ -58,7 +58,7 @@ public class SenderService implements Runnable {
         }
 
         String data = (message.getState() + " " + message.getParameters()).trim();
-        char [] res = new char[data.length()+3];
+        char [] res = new char[data.length()+4];
         int i;
         char temp;
         long sum_temp = 0;
@@ -68,9 +68,12 @@ public class SenderService implements Runnable {
             res[i] = temp;
             sum_temp += temp;
         }
-        res[0] = (char) (sum_temp % NetworkService.CHECKSUM);
+        char checksum_result = (char)(sum_temp % NetworkService.CHECKSUM);
+        checksum_result = (char)((checksum_result + 1) % Byte.MAX_VALUE);
+        res[0] = checksum_result;
         res[1] = NetworkService.STX;
         res[i] = NetworkService.ETX;
+        res[i+1] = '\0';
 
         return new String(res);
     }

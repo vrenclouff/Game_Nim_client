@@ -88,7 +88,6 @@ public class GameController extends BaseController {
 
     @FXML
     private void endTurn() {
-        logger.info("End turn.");
         network.send(new SNDMessage(NetworkState.GAME_SWITCH_USER, StringUtils.EMPTY));
     }
 

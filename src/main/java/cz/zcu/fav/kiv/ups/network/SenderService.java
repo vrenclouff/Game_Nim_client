@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * Created by Lukas Cerny on 12.12.16.
@@ -38,7 +39,7 @@ public class SenderService implements Runnable {
                     if (message.getState() == NetworkState.PONG) {
                         network.incrementPong();
                     }else {
-                        logger.info("Sending message: "+msg);
+                        logger.info("Sending message: "+message.getState()+" "+message.getParameters());
                     }
                     stream.write(msg.getBytes());
                     stream.flush();

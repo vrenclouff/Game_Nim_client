@@ -1,9 +1,6 @@
 package cz.zcu.fav.kiv.ups.view;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.stage.StageStyle;
 
 import java.util.Optional;
@@ -22,7 +19,10 @@ public class PrettyAlert {
     public PrettyAlert(String header, String content) {
         alert = new Alert(Alert.AlertType.NONE);
         alert.setHeaderText(header);
-        alert.setContentText(content);
+  //      alert.setContentText(content);
+        Label label = new Label(content);
+        label.setWrapText(true);
+        alert.getDialogPane().setContent(label);
         alert.initStyle(StageStyle.UNDECORATED);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource(CSS).toExternalForm());

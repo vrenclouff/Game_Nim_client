@@ -135,8 +135,6 @@ public class NetworkServiceImpl implements Network, NetworkService {
     @Override
     public void disconnect() {
         try {
-            this.timerWatch.cancel();
-            this.timerPong.cancel();
             this.networkAvailable = false;
             this.unsendPackets = 0;
             getReceiveQueue().put(new RCVMessage(NetworkState.IN_APP_ALERT,
@@ -144,8 +142,10 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.socket.close();
             this.rcvService.stop();
             this.sndService.stop();
+            this.timerWatch.cancel();
+            this.timerPong.cancel();
         } catch (IOException | InterruptedException e) {
-            logger.error("", e);
+       //     logger.error("", e);
         }
     }
 

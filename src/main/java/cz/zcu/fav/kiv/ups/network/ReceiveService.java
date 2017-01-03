@@ -40,7 +40,7 @@ public class ReceiveService implements Runnable {
                 int count = stream.read(buffer);
                 if (count > 0) {
                     String receiveMessage = new String(buffer, 0, count);
-                    logger.debug(receiveMessage);
+                    logger.info("Row message: " + receiveMessage);
                     List<RCVMessage> messageList = new ArrayList<>();
                     createValidatedMessage(messageList, receiveMessage);
                     for(RCVMessage message : messageList) {
@@ -48,7 +48,7 @@ public class ReceiveService implements Runnable {
                             network.resetPong();
                         } else {
                             try {
-                                logger.info("Receive message " + message.getState()+" "+Arrays.toString(message.getParameters()));
+                                logger.info("Validated message " + message.getState()+" "+Arrays.toString(message.getParameters()));
                                 network.getReceiveQueue().put(message);
                             } catch (InterruptedException e) {e.printStackTrace();}
                         }

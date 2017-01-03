@@ -30,19 +30,24 @@ public class GameManager {
 
 
     public void invite(Object [] params) {
-        String userRecipient = ((String)params[0]).trim();
-        windowManager.showAlert(InternalMsg.INVITE,
-                "Chcete přijmout požadavek do hry od hráče "+userRecipient+"?",
-                userRecipient);
+        String result = ((String)params[0]).trim();
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            windowManager.showAlert(InternalMsg.INVITE,
+                    "Chcete přijmout požadavek do hry od hráče " + result + "?",
+                    result);
+        }
     }
 
     public void join(Object [] params) {
-        Object [] data = new Object[4];
-        data[0] = InternalMsg.STATE;
-        data[1] = ((String)params[0]).trim();
-        data[2] = ViewUtils.matchesInLayers(((String)params[1]).trim());
-        data[3] = ((String)params[2]).trim();
-        windowManager.processView(new ViewDTO(GameController.class, data));
+        String result = ((String)params[0]).trim();
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            Object[] data = new Object[4];
+            data[0] = InternalMsg.STATE;
+            data[1] = result;
+            data[2] = ViewUtils.matchesInLayers(((String) params[1]).trim());
+            data[3] = ((String) params[2]).trim();
+            windowManager.processView(new ViewDTO(GameController.class, data));
+        }
     }
 
     public void alert(Object [] params) {
@@ -53,20 +58,25 @@ public class GameManager {
     }
 
     public void settings(Object [] params) {
-        String json = ((String) params[0]).trim();
-        Integer layers = 0;
-        Integer taking = 0;
-        try {
-            Map<String, Object> map = objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
-            layers = (Integer) map.get("layers");
-            taking = (Integer) map.get("taking");
-        } catch (IOException e) {e.printStackTrace();}
-        Application.getInstance().setSettings(new GameSettings(layers, taking));
+        String result = ((String) params[0]).trim();
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            Integer layers = 0;
+            Integer taking = 0;
+            try {
+                Map<String, Object> map = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {
+                });
+                layers = (Integer) map.get("layers");
+                taking = (Integer) map.get("taking");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Application.getInstance().setSettings(new GameSettings(layers, taking));
+        }
     }
 
     public void take(Object [] params) {
         String result = ((String)params[0]).trim();
-        if (!result.equalsIgnoreCase("ERROR")) {
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
             Object [] data = new Object[params.length + 1];
             data[0] = InternalMsg.TAKE;
             for(int i=1;i<params.length+1;i++){data[i] = params[i-1];}
@@ -75,10 +85,13 @@ public class GameManager {
     }
 
     public void switch_user(Object [] params) {
-        Object [] data = new Object[params.length + 1];
-        data[0] = InternalMsg.SWITCH_USER;
-        for(int i=1;i<params.length+1;i++){data[i] = params[i-1];}
-        windowManager.processView(new ViewDTO(GameController.class, data));
+        String result = ((String)params[0]).trim();
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            Object[] data = new Object[params.length + 1];
+            data[0] = InternalMsg.SWITCH_USER;
+            for (int i = 1; i < params.length + 1; i++) {data[i] = params[i - 1];}
+            windowManager.processView(new ViewDTO(GameController.class, data));
+        }
     }
 
     public void disconnect(Object [] params) {
@@ -102,7 +115,9 @@ public class GameManager {
 
     public void finish(Object [] params) {
         String result = ((String) params[0]).trim();
-        windowManager.showAlert(InternalMsg.FINISH, result);
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            windowManager.showAlert(InternalMsg.FINISH, result);
+        }
     }
 
     public void game_continue(Object [] params) {
@@ -114,11 +129,14 @@ public class GameManager {
     }
 
     public void state(Object [] params) {
-        Object [] data = new Object[4];
-        data[0] = InternalMsg.STATE;
-        data[1] = ((String) params[0]).trim();
-        data[2] = ((String) params[1]).trim();
-        data[3] = ((String) params[2]).trim();
-        windowManager.processView(new ViewDTO(GameController.class, data));
+        String result = ((String) params[0]).trim();
+        if (!result.equalsIgnoreCase(Network.ERROR)) {
+            Object[] data = new Object[4];
+            data[0] = InternalMsg.STATE;
+            data[1] = result;
+            data[2] = ((String) params[1]).trim();
+            data[3] = ((String) params[2]).trim();
+            windowManager.processView(new ViewDTO(GameController.class, data));
+        }
     }
 }

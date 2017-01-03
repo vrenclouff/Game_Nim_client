@@ -19,7 +19,6 @@ public class PrettyAlert {
     public PrettyAlert(String header, String content) {
         alert = new Alert(Alert.AlertType.NONE);
         alert.setHeaderText(header);
-  //      alert.setContentText(content);
         Label label = new Label(content);
         label.setWrapText(true);
         alert.getDialogPane().setContent(label);

@@ -135,9 +135,9 @@ public class GameController extends BaseController {
                 ButtonType buttonTypeNo = new ButtonType("Ne");
                 alert.addButtons(buttonTypeYes, buttonTypeNo);
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == buttonTypeYes) {
+                if (result.get() == buttonTypeNo) {
                     network.send(new SNDMessage(NetworkState.GAME_END, StringUtils.EMPTY));
-                }else if (result.get() == buttonTypeNo) {
+                }else if (result.get() == buttonTypeYes) {
                     startLoadingWheel();
                 }
             }break;

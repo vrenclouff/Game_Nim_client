@@ -4,18 +4,14 @@ import cz.zcu.fav.kiv.ups.core.Application;
 import cz.zcu.fav.kiv.ups.core.InternalMsg;
 import cz.zcu.fav.kiv.ups.network.NetworkState;
 import cz.zcu.fav.kiv.ups.network.SNDMessage;
+import cz.zcu.fav.kiv.ups.view.components.ViewUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class LoginController extends BaseController {
 
-    private static final Character[] UNSUPPORTED_CHARACTERS = {' ', 'ě', 'š', 'č', 'ř','ž', 'ý', 'á', 'í', 'é'};
+    private static final Character[] UNSUPPORTED_CHARACTERS = {' '};
 
     @FXML
     private TextField username;
@@ -49,7 +45,7 @@ public class LoginController extends BaseController {
             validationMessage.setText("Jméno je povinné."); return;
         }
 
-        text = text.trim();
+        text = ViewUtils.stripAccents(text.trim());
         List<Character> first = text.chars().mapToObj(e->(char)e).collect(Collectors.toList());
         List<Character> second = Arrays.asList(UNSUPPORTED_CHARACTERS);
         boolean isCommon = Collections.disjoint(second, first);

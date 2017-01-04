@@ -2,6 +2,8 @@ package cz.zcu.fav.kiv.ups.view.components;
 
 import org.apache.commons.lang.math.NumberUtils;
 
+import java.text.Normalizer;
+
 /**
  * Created by Lukas Cerny on 19.12.16.
  */
@@ -23,5 +25,12 @@ public class ViewUtils {
             return matches[index];
         }
         return "0";
+    }
+
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 }

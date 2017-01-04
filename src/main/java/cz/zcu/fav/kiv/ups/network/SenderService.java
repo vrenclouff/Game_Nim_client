@@ -1,5 +1,6 @@
 package cz.zcu.fav.kiv.ups.network;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -54,24 +55,19 @@ public class SenderService implements Runnable {
     private String createValidatedMessage(SNDMessage message) {
 
         if (message == null) {
-            return "";
+            return StringUtils.EMPTY;
         }
 
         String data = (message.getState() + " " + message.getParameters()).trim();
-        char [] res = new char[data.length()+4];
+        char [] res = new char[data.length()+3];
         int i;
         char temp;
-        long sum_temp = 0;
 
-        for(i=2;i<data.length()+2;i++) {
-            temp = (char) data.getBytes()[i-2];
+        for(i=1;i<data.length()+1;i++) {
+            temp = (char) data.getBytes()[i-1];
             res[i] = temp;
-            sum_temp += temp;
         }
-        char checksum_result = (char)(sum_temp % NetworkService.CHECKSUM);
-        checksum_result = (char)((checksum_result + 1) % Byte.MAX_VALUE);
-        res[0] = checksum_result;
-        res[1] = NetworkService.STX;
+        res[0] = NetworkService.STX;
         res[i] = NetworkService.ETX;
         res[i+1] = '\0';
 

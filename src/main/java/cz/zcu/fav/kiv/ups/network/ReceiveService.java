@@ -39,10 +39,9 @@ public class ReceiveService implements Runnable {
                 byte[] buffer = new byte[1024];
                 int count = stream.read(buffer);
                 if (count > 0) {
-                    String receiveMessage = new String(buffer, 0, count);
-                    logger.info("Row message: " + receiveMessage);
+                    logger.info("Row message: " + buffer);
                     List<RCVMessage> messageList = new ArrayList<>();
-                    createValidatedMessage(messageList, receiveMessage);
+                    createValidatedMessage(messageList, buffer);
                     for(RCVMessage message : messageList) {
                         if (message.getState() == NetworkState.PONG) {
                             network.resetPong();
@@ -62,48 +61,39 @@ public class ReceiveService implements Runnable {
         logger.debug("Thread ReceiveService ends.");
     }
 
-    private void createValidatedMessage(List<RCVMessage> messageList, String message) {
+    private void createValidatedMessage(List<RCVMessage> messageList, byte [] message) {
 
         logger.debug("Validation receive message: " + message);
 
-        for(int i = 0; i < message.length(); i++ ) {
-            char c = message.charAt(i);
+        for(int i = 0; i < message.length; i++ ) {
+            byte c = message[i];
             if (c == NetworkService.STX) {
-                message = message.substring(i-1); break;
+                message = Arrays.copyOfRange(message, i, message.length); break;
             }
         }
 
         /* Kontrola minimalni delky zpravy */
-        if (message.length() < 3) {
+        if (message.length < 2) {
             logger.debug("The message does not have correct length.");return;
         }
 
         /* Kontrola pocatecniho znacky zpravy */
-        if (message.charAt(1) != NetworkService.STX) {
+        if (message[0] != NetworkService.STX) {
             logger.debug("The message does not have STX mark.");return;
         }
 
-        char temp[] = new char[message.length()];
+        char temp[] = new char[message.length];
         char c;
         int i;
         boolean start_end_mark = false;
-        int checksum_init = message.charAt(0);
-        long checksum_temp = 0;
 
         /* Kontrola konecne znacky zpravy a checksumy */
-        for(i = 0; i < message.length()-2; i++) {
-            if ((c = message.charAt(i+2)) == NetworkService.ETX) { start_end_mark = true; break; }
-            checksum_temp += c;
+        for(i = 0; i < message.length-1; i++) {
+            if ((c = (char)message[i+1]) == NetworkService.ETX) { start_end_mark = true; break; }
             temp[i] = c;
         }
         temp[i] = '\0';
         String validatedMessage = new String(temp).trim();
-
-        char checksum_result = (char)(checksum_temp % NetworkService.CHECKSUM);
-        checksum_result = (char)((checksum_result + 1) % Byte.MAX_VALUE);
-        if (checksum_init != checksum_result) {
-            logger.debug("The message does not valid by checksum.");return;
-        }
 
         if (!start_end_mark) {
             logger.debug("The message does not have ETX mark.");return;
@@ -128,7 +118,7 @@ public class ReceiveService implements Runnable {
         logger.debug("The message is successful validated.");
         messageList.add(new RCVMessage(state, params));
 
-        String nextMsg = message.substring(validatedMessage.length() + 1 + 1 + 1);
+        byte [] nextMsg = Arrays.copyOfRange(message, validatedMessage.length() + 1 + 1 + 1, message.length);
         createValidatedMessage(messageList, nextMsg);
     }
 

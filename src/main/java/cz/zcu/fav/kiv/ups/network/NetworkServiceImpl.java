@@ -20,7 +20,7 @@ public class NetworkServiceImpl implements Network, NetworkService {
 
     private final static int MAX_UNSEND_PACKETS = 5;
 
-    private static final boolean PING_PONG = false;
+    private static final boolean PING_PONG = true;
 
     private LinkedBlockingQueue<RCVMessage> rcvQueue;
 

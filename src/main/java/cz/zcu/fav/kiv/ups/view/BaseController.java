@@ -64,11 +64,13 @@ abstract class BaseController {
         this.loadingPane.setVisible(true);
         this.loadingStopWheel.setOnAction(e -> didStopLoadingWheel());
         this.content.setOpacity(0.5);
+        this.content.setDisable(true);
     }
 
     void stopLoadingWheel() {
         this.loadingPane.setVisible(false);
         this.content.setOpacity(1.0);
+        this.content.setDisable(false);
     }
 
     protected abstract void didStopLoadingWheel();

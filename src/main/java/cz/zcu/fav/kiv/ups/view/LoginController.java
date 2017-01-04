@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class LoginController extends BaseController {
 
-    private static final Character[] UNSUPPORTED_CHARACTERS = {' '};
+    private static final Character[] UNSUPPORTED_CHARACTERS = {' ', 'ě', 'š', 'č', 'ř','ž', 'ý', 'á', 'í', 'é'};
 
     @FXML
     private TextField username;
@@ -54,7 +54,7 @@ public class LoginController extends BaseController {
         List<Character> second = Arrays.asList(UNSUPPORTED_CHARACTERS);
         boolean isCommon = Collections.disjoint(second, first);
         if (!isCommon) {
-            validationMessage.setText("Nepovolený znak ' '"); return;
+            validationMessage.setText("Nepovolený znak"); return;
         }
 
         validationMessage.setText(StringUtils.EMPTY);

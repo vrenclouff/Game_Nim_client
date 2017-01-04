@@ -20,6 +20,8 @@ public class NetworkServiceImpl implements Network, NetworkService {
 
     private final static int MAX_UNSEND_PACKETS = 5;
 
+    private static final boolean PING_PONG = false;
+
     private LinkedBlockingQueue<RCVMessage> rcvQueue;
 
     private LinkedBlockingQueue<SNDMessage> sndQueue;
@@ -68,20 +70,28 @@ public class NetworkServiceImpl implements Network, NetworkService {
             logger.debug("Settings socket streams.");
             this.rcvService.setStream(socket.getInputStream());
             this.sndService.setStream(socket.getOutputStream());
-/*
-            logger.debug("Start timer for watch network.");
-            this.timerWatch = new Timer();
-            this.timerWatch.schedule(new TimerTask() {public void run() {watchNetwork();}}, 1000, 2000);
 
-            logger.debug("Start timer for pong.");
-            this.timerPong = new Timer();
-            this.timerPong.schedule(new TimerTask() {
-                public void run() {
-                    try {getSenderQueue().put(new SNDMessage(NetworkState.PONG, ""));}
-                    catch (InterruptedException e) {e.printStackTrace();}
-                }
-            }, 1000, 3000);
-*/
+            if (PING_PONG) {
+                logger.debug("Start timer for watch network.");
+                this.timerWatch = new Timer();
+                this.timerWatch.schedule(new TimerTask() {
+                    public void run() {
+                        watchNetwork();
+                    }
+                }, 1000, 2000);
+
+                logger.debug("Start timer for pong.");
+                this.timerPong = new Timer();
+                this.timerPong.schedule(new TimerTask() {
+                    public void run() {
+                        try {
+                            getSenderQueue().put(new SNDMessage(NetworkState.PONG, ""));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 1000, 3000);
+            }
             logger.debug("Start receive thread.");
             this.rcvService.start();
 
@@ -142,11 +152,11 @@ public class NetworkServiceImpl implements Network, NetworkService {
             this.socket.close();
             this.rcvService.stop();
             this.sndService.stop();
-            if (timerWatch != null) this.timerWatch.cancel();
-            if (timerPong != null) this.timerPong.cancel();
-        } catch (IOException | InterruptedException e) {
-       //     logger.error("", e);
-        }
+            if (PING_PONG) {
+               this.timerWatch.cancel();
+               this.timerPong.cancel();
+            }
+        } catch (IOException | InterruptedException e) {}
     }
 
     @Override

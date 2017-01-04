@@ -39,7 +39,7 @@ public class ReceiveService implements Runnable {
                 byte[] buffer = new byte[1024];
                 int count = stream.read(buffer);
                 if (count > 0) {
-                    logger.info("Row message: " + buffer);
+                    logger.info("Row message: " + new String(buffer, 0, count));
                     List<RCVMessage> messageList = new ArrayList<>();
                     createValidatedMessage(messageList, buffer);
                     for(RCVMessage message : messageList) {
